@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSU Toolbox", "OSU Toolbox\OSU Toolbox.csproj", "{443F0F9C-0FD3-4D31-BC34-E8E063BA5B83}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "OSU Toolbox", "OSU Toolbox\OSU Toolbox.vbproj", "{87BF7A05-02DA-4B36-817A-689CA35033F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{443F0F9C-0FD3-4D31-BC34-E8E063BA5B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{443F0F9C-0FD3-4D31-BC34-E8E063BA5B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{443F0F9C-0FD3-4D31-BC34-E8E063BA5B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{443F0F9C-0FD3-4D31-BC34-E8E063BA5B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87BF7A05-02DA-4B36-817A-689CA35033F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87BF7A05-02DA-4B36-817A-689CA35033F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87BF7A05-02DA-4B36-817A-689CA35033F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87BF7A05-02DA-4B36-817A-689CA35033F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
