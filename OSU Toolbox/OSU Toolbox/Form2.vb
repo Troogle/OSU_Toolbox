@@ -9,8 +9,4 @@ Public Class Form2
             ListBox1.Items.Add(q_List.Item(i))
         Next
     End Sub
-
-    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
-
-    End Sub
 End Class
