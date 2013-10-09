@@ -7,6 +7,9 @@ Public Class QQ
         Public nick As String
         Public gender As Byte
     End Class
+    Public Sub Send2QQ(id As UInteger, Str As String)
+        Shell("QSetinfo " + id.ToString + " " + Str)
+    End Sub
     Public Function GetQQList() As List(Of String)
         GetQQList = New List(Of String)
         Dim Q_list As List(Of QQInfo)
