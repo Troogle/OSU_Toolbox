@@ -1,12 +1,8 @@
 ﻿Imports OSU_Toolbox.QQ
 Public Class Form2
-
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim q_List As New List(Of String)
-        Dim qq As New QQ
-        q_List = qq.GetQQList()
-        For i = 0 To q_List.Count
-            ListBox1.Items.Add(q_List.Item(i))
-        Next
+    Public qq As New QQ
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        qq.GetQQList()
+        ListView1 = qq.ListofQQ
     End Sub
 End Class

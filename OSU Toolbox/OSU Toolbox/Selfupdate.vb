@@ -1,14 +1,14 @@
 ﻿Imports System.Net
 Imports System.IO
 Public Class Selfupdate
-    Dim AppPath As String = My.Application.Info.DirectoryPath & "\"
-    Dim XmlFilePath As String = AppPath & "update.xml"
-    Dim UpDateXml As New Xml.XmlDocument
-    Dim url As String = ""
-    Dim ver As String = ""
-    Dim temp As String = Environment.GetEnvironmentVariable("Temp").ToString & "\"
-    Private WithEvents myWebclient As Net.WebClient
-    Private Sub download(ByVal url As String)
+    Shared AppPath As String = My.Application.Info.DirectoryPath & "\"
+    Shared XmlFilePath As String = AppPath & "update.xml"
+    Shared UpDateXml As New Xml.XmlDocument
+    Shared url As String = ""
+    Shared ver As String = ""
+    Shared temp As String = Environment.GetEnvironmentVariable("Temp").ToString & "\"
+    Shared WithEvents myWebclient As Net.WebClient
+    Shared Sub download(ByVal url As String)
         Dim res As DialogResult
         Try
             My.Computer.Network.DownloadFile(url, My.Computer.FileSystem.CombinePath(temp, My.Computer.FileSystem.GetName(url)), "", "", False, 10000, True)
@@ -24,7 +24,7 @@ Public Class Selfupdate
             Exit Sub
         End Try
     End Sub
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Public Shared Sub check_update()
         Try
             UpDateXml.Load(XmlFilePath)
             url = UpDateXml.SelectNodes("/Xml/Url").Item(0).InnerText
