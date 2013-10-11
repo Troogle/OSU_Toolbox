@@ -3,7 +3,6 @@
         Public uin As UInteger
         Public nick As String
     End Class
-    Public ListofQQ As New ListView
     Public web As WebBrowser = New WebBrowser()
     Public Sub New()
         Dim url As String = "http://xui.ptlogin2.qq.com/cgi-bin/qlogin"
@@ -12,25 +11,7 @@
     Public Sub Send2QQ(id As UInteger, Str As String)
         Shell("QSetinfo " + id.ToString + " " + Str)
     End Sub
-    Public Function GetQQList() As ListView
-        Dim Q_list As List(Of QQInfo)
-        ListofQQ.Clear()
-        Q_list = GetQQinfoList()
-        ListofQQ.Columns.Add("ID", 100)
-        ListofQQ.Columns.Add("昵称", 100)
-        Try
-            For i = 0 To Q_list.Count
-                Dim Tmp As New ListViewItem
-                Tmp.Text = Q_list.Item(i).uin.ToString
-                Tmp.SubItems.Add(Q_list.Item(i).nick)
-                ListofQQ.Items.Add(Tmp)
-            Next
-        Catch ex As Exception
-            MsgBox("获取当前在线QQ出错！")
-        End Try
-        Return ListofQQ
-    End Function
-    Private Function GetQQinfoList() As List(Of QQInfo)
+    Public Function GetQQList() As List(Of QQInfo)
         Dim ref As New List(Of QQInfo)
         Try
             If web.ReadyState = WebBrowserReadyState.Complete Then

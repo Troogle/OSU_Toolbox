@@ -5,7 +5,7 @@
 
     End Class
     'location
-    'read
-    'write
-    'metadata
+    'metadata/set ID
+    'no set-wide storyboard,fill it in per diffs
+
 End Class
