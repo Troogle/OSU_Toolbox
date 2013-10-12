@@ -14,10 +14,13 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub PlayButton_Click(sender As Object, e As EventArgs) Handles PlayButton.Click
+        If PlayButton.Text = "播放" Then PlayButton.Text = "暂停" Else PlayButton.Text = "播放"
+
+    End Sub
+
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Form2.Show()
-
-
     End Sub
 End Class

@@ -1,5 +1,8 @@
 ﻿Public Class StoryBoard
-    Inherits Beatmap
+    Public elements As New List(Of SBelement)
+    'TODO:单独抽取trigger并作索引
+    Public Variables() As SBvar
+    '目录由beatmapfiles.location-->beatmap.location继承
     Public Enum ElementType
         Sprite
         Animation
@@ -22,6 +25,10 @@
         BottomCentre
         BottomRight
     End Enum
+    Public Enum ElementLoopType
+        LoopOnce
+        LoopForever
+    End Enum
     Public Enum EventType
         'F - fade【隐藏(淡入淡出)】
         'M - move【移动】
@@ -42,10 +49,6 @@
         T
         P
     End Enum
-    Public Enum looptype
-        LoopOnce
-        LoopForever
-    End Enum
     Public Enum Triggertype
         HitSoundClap
         HitSoundFinish
@@ -53,6 +56,10 @@
         Passing
         Failing
     End Enum
+    Public Structure SBvar
+        Public name As String
+        Public replace As String
+    End Structure
     Public Structure SBEvent
         Public Type As EventType
         Public easing As Integer
@@ -62,19 +69,18 @@
         Public startT, endT As UInteger
         Public startxF, startyF, endyF, endxF As Single 'F,S(只用x),V 'F stands for float-option
         Public startx, starty, endx, endy As Integer 'R(只用x),MX,MY（只用x/y),M
-        '注意P还没写 H - 水平翻转 V - 垂直翻转 A - additive-blend colour (as opposed to alpha-blend)
+        'P只用startx H - 水平翻转(0) V - 垂直翻转(1) A - additive-blend colour (2)
         Public r1, g1, b1, r2, g2, b2 As Integer 'C
     End Structure
     Public Class SBelement
         Public Type As ElementType
         Public Layers As ElementLayer
-        Public Origin As ElementOrigin 'sample-
+        Public Origin As ElementOrigin 'sample时无
         Public path As String
-        Public x, y As Integer 'sample-
+        Public x, y As Integer 'sample时无时无
         'Animation only
-        Public frameCount, framedealy As Integer 'sample-
-        Public Looptype As looptype 'sample-
-        '默认LoopForever【一直循环】
+        Public frameCount, framedealy As Integer
+        Public Looptype As ElementLoopType '默认LoopForever【一直循环】
         'Sample only
         Public time, volume As Integer
         Public SBevents() As SBEvent
@@ -85,15 +91,9 @@
         '如果他们和任何存在的故事版事件重叠,他们将不会循环直到那些故事版事件不在生效
         Public Triggerevents() As SBEvent
     End Class
-    Public Structure SBvar
-        Public name As String
-        Public replace As String
-    End Structure
-    Public elements() As SBelement
-    'TODO:单独抽取trigger并作索引
-    Public Variables() As SBvar
-    Public Sub ReadSection(ByRef content As String())
+    Public Sub ReadSection(ByRef content As String)
         'initlazation from pieces of files(lines w/t bg/video/break/etc.)
+
         'content is fulfilled by Beatmap
         'do variables change first
         '注意点：
