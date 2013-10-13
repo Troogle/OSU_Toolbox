@@ -2,7 +2,7 @@
     Public elements As New List(Of SBelement)
     'TODO:单独抽取trigger并作索引
     Public Variables As New List(Of SBvar)
-    '目录由beatmapfiles.location-->beatmap.location继承
+    '目录由beatmapfiles.location-->beatmap.location
     Public Enum ElementType
         Background
         Video
@@ -71,7 +71,7 @@
         '1 - start fast and slow down【开始快结束慢】
         '2 - start slow and speed up【开始慢结束快】
         Public startT, endT As UInteger
-        Public startxF, startyF, endyF, endxF As Single 'F,S(只用x),V 'F stands for float-option
+        Public startxF, startyF, endyF, endxF As Double 'F,S(只用x),V 'F stands for float-option
         Public startx, starty, endx, endy As Integer 'R(只用x),MX,MY（只用x/y),M
         'P只用startx H - 水平翻转(0) V - 垂直翻转(1) A - additive-blend colour (2)
         Public r1, g1, b1, r2, g2, b2 As Integer 'C
@@ -98,7 +98,7 @@
         '触发器循环和普通循环一样是从零计数. 如果两个重叠, 第一个将会被停止且被一个从头开始的循环替代.
         '如果他们和任何存在的故事版事件重叠,他们将不会循环直到那些故事版事件不在生效
     End Class
-    Public Sub ReadSection(ByRef content As List(Of String))
+    Public Sub New(content As List(Of String))
         'initlazation from pieces of files(lines w/t bg/video/break/etc.)
 
         'content is fulfilled by Beatmap

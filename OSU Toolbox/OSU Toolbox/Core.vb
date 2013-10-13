@@ -11,5 +11,32 @@
             Getpath = ""
         End Try
     End Function
+    Public Enum ObjectFlag
+        Normal = 1
+        Slider = 2
+        NewCombo = 4
+        NormalNewCombo = 5
+        SliderNewCombo = 6
+        Spinner = 8
+        SpinnerNewCombo = 12
+        ColourHax = 112
+        Hold = 128
+        ManiaLong = 128
+    End Enum
+    Public Enum HitSound
+        Normal = 0
+        Whistle = 2
+        Finish = 4
+        Clap = 8
+    End Enum
+    Public Enum TSample
+        Normal
+        Soft
+        Drum
+    End Enum
+    Public Structure CSample
+        Public sample As TSample
+        Public sampleset As Integer
+    End Structure
 End Class
 

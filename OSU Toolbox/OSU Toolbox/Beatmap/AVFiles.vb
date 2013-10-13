@@ -3,7 +3,7 @@ Imports Un4seen.Bass
 Public Class Audiofiles
     Public path As String
     Public name As String
-    Public Sub Play()
+    Public Sub Play(volume As Integer)
 
     End Sub
 End Class
