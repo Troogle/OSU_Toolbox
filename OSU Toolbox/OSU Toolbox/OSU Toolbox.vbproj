@@ -119,7 +119,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="OsuDB.vb" />
-    <Compile Include="OSUGeneral.vb" />
+    <Compile Include="Core.vb" />
     <Compile Include="QQ.vb" />
     <Compile Include="Selfupdate.vb" />
     <Compile Include="Beatmap\StoryBoard.vb" />

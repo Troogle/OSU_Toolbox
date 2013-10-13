@@ -47,6 +47,8 @@ Partial Class Form1
         Me.顺序播放ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.单曲循环ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.QQ状态同步ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.音效音乐控制ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SB开关ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.关于ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PlayButton = New System.Windows.Forms.Button()
         Me.StopButton = New System.Windows.Forms.Button()
@@ -58,11 +60,11 @@ Partial Class Form1
         Me.TrackBar2 = New System.Windows.Forms.TrackBar()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
         Me.ListBox2 = New System.Windows.Forms.ListBox()
         Me.ListView2 = New System.Windows.Forms.ListView()
@@ -72,17 +74,16 @@ Partial Class Form1
         Me.TrackBar3 = New System.Windows.Forms.TrackBar()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TrackBar4 = New System.Windows.Forms.TrackBar()
-        Me.音效音乐控制ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SB开关ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
@@ -259,6 +260,18 @@ Partial Class Form1
         Me.QQ状态同步ToolStripMenuItem.Size = New System.Drawing.Size(168, 24)
         Me.QQ状态同步ToolStripMenuItem.Text = "QQ状态同步"
         '
+        '音效音乐控制ToolStripMenuItem
+        '
+        Me.音效音乐控制ToolStripMenuItem.Name = "音效音乐控制ToolStripMenuItem"
+        Me.音效音乐控制ToolStripMenuItem.Size = New System.Drawing.Size(168, 24)
+        Me.音效音乐控制ToolStripMenuItem.Text = "音效音乐控制"
+        '
+        'SB开关ToolStripMenuItem
+        '
+        Me.SB开关ToolStripMenuItem.Name = "SB开关ToolStripMenuItem"
+        Me.SB开关ToolStripMenuItem.Size = New System.Drawing.Size(168, 24)
+        Me.SB开关ToolStripMenuItem.Text = "SB开关"
+        '
         '关于ToolStripMenuItem
         '
         Me.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem"
@@ -294,7 +307,7 @@ Partial Class Form1
         '
         'TrackBar1
         '
-        Me.TrackBar1.Location = New System.Drawing.Point(342, 433)
+        Me.TrackBar1.Location = New System.Drawing.Point(386, 433)
         Me.TrackBar1.Maximum = 100
         Me.TrackBar1.Name = "TrackBar1"
         Me.TrackBar1.Size = New System.Drawing.Size(480, 56)
@@ -334,14 +347,15 @@ Partial Class Form1
         Me.TrackBar2.Maximum = 100
         Me.TrackBar2.Name = "TrackBar2"
         Me.TrackBar2.Orientation = System.Windows.Forms.Orientation.Vertical
-        Me.TrackBar2.Size = New System.Drawing.Size(56, 360)
+        Me.TrackBar2.Size = New System.Drawing.Size(56, 342)
         Me.TrackBar2.TabIndex = 10
         Me.TrackBar2.TickStyle = System.Windows.Forms.TickStyle.None
+        Me.TrackBar2.Value = 100
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(829, 438)
+        Me.Label2.Location = New System.Drawing.Point(829, 412)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(37, 15)
         Me.Label2.TabIndex = 11
@@ -356,17 +370,6 @@ Partial Class Form1
         Me.TabControl1.SelectedIndex = 0
         Me.TabControl1.Size = New System.Drawing.Size(324, 360)
         Me.TabControl1.TabIndex = 12
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.SplitContainer2)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 25)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(316, 331)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Colletions"
-        Me.TabPage1.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -396,6 +399,14 @@ Partial Class Form1
         Me.SplitContainer1.SplitterDistance = 199
         Me.SplitContainer1.TabIndex = 0
         '
+        'ListView1
+        '
+        Me.ListView1.Location = New System.Drawing.Point(3, 3)
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(193, 319)
+        Me.ListView1.TabIndex = 0
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        '
         'ListBox1
         '
         Me.ListBox1.FormattingEnabled = True
@@ -405,13 +416,16 @@ Partial Class Form1
         Me.ListBox1.Size = New System.Drawing.Size(101, 319)
         Me.ListBox1.TabIndex = 0
         '
-        'ListView1
+        'TabPage1
         '
-        Me.ListView1.Location = New System.Drawing.Point(3, 3)
-        Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(193, 319)
-        Me.ListView1.TabIndex = 0
-        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.TabPage1.Controls.Add(Me.SplitContainer2)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 25)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(316, 331)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Colletions"
+        Me.TabPage1.UseVisualStyleBackColor = True
         '
         'SplitContainer2
         '
@@ -480,6 +494,7 @@ Partial Class Form1
         Me.TrackBar3.Size = New System.Drawing.Size(122, 56)
         Me.TrackBar3.TabIndex = 15
         Me.TrackBar3.TickStyle = System.Windows.Forms.TickStyle.None
+        Me.TrackBar3.Value = 60
         '
         'Label4
         '
@@ -498,24 +513,23 @@ Partial Class Form1
         Me.TrackBar4.Size = New System.Drawing.Size(122, 56)
         Me.TrackBar4.TabIndex = 17
         Me.TrackBar4.TickStyle = System.Windows.Forms.TickStyle.None
+        Me.TrackBar4.Value = 80
         '
-        '音效音乐控制ToolStripMenuItem
+        'Label5
         '
-        Me.音效音乐控制ToolStripMenuItem.Name = "音效音乐控制ToolStripMenuItem"
-        Me.音效音乐控制ToolStripMenuItem.Size = New System.Drawing.Size(168, 24)
-        Me.音效音乐控制ToolStripMenuItem.Text = "音效音乐控制"
-        '
-        'SB开关ToolStripMenuItem
-        '
-        Me.SB开关ToolStripMenuItem.Name = "SB开关ToolStripMenuItem"
-        Me.SB开关ToolStripMenuItem.Size = New System.Drawing.Size(168, 24)
-        Me.SB开关ToolStripMenuItem.Text = "SB开关"
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(343, 436)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(37, 15)
+        Me.Label5.TabIndex = 19
+        Me.Label5.Text = "进度"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(886, 593)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.TrackBar2)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.TrackBar4)
@@ -542,11 +556,11 @@ Partial Class Form1
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.SplitContainer1.Panel1.ResumeLayout(False)
         Me.SplitContainer1.Panel2.ResumeLayout(False)
         Me.SplitContainer1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
@@ -608,5 +622,6 @@ Partial Class Form1
     Friend WithEvents TrackBar3 As System.Windows.Forms.TrackBar
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TrackBar4 As System.Windows.Forms.TrackBar
+    Friend WithEvents Label5 As System.Windows.Forms.Label
 
 End Class

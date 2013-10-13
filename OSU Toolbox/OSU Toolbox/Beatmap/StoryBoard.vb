@@ -1,12 +1,16 @@
 ﻿Public Class StoryBoard
     Public elements As New List(Of SBelement)
     'TODO:单独抽取trigger并作索引
-    Public Variables() As SBvar
+    Public Variables As New List(Of SBvar)
     '目录由beatmapfiles.location-->beatmap.location继承
     Public Enum ElementType
+        Background
+        Video
+        Break
+        Colour
         Sprite
-        Animation
         Sample
+        Animation
     End Enum
     Public Enum ElementLayer
         Background
@@ -72,6 +76,11 @@
         'P只用startx H - 水平翻转(0) V - 垂直翻转(1) A - additive-blend colour (2)
         Public r1, g1, b1, r2, g2, b2 As Integer 'C
     End Structure
+    Public Structure TriggerEvent
+        Public triggerstart, triggerend As Integer
+        Public events() As SBEvent
+        Public count As Integer
+    End Structure
     Public Class SBelement
         Public Type As ElementType
         Public Layers As ElementLayer
@@ -83,15 +92,13 @@
         Public Looptype As ElementLoopType '默认LoopForever【一直循环】
         'Sample only
         Public time, volume As Integer
-        Public SBevents() As SBEvent
-        Public trigger As Triggertype
-        Public triggerstart, triggerend As Integer
+        Public SBevents As New List(Of SBEvent)
+        Public trigger As New Dictionary(Of Triggertype, TriggerEvent)
         '事件触发循环可以被游戏时间事件触发. 虽然叫做循环, 事件触发循环循环时只执行一次
         '触发器循环和普通循环一样是从零计数. 如果两个重叠, 第一个将会被停止且被一个从头开始的循环替代.
         '如果他们和任何存在的故事版事件重叠,他们将不会循环直到那些故事版事件不在生效
-        Public Triggerevents() As SBEvent
     End Class
-    Public Sub ReadSection(ByRef content As String)
+    Public Sub ReadSection(ByRef content As List(Of String))
         'initlazation from pieces of files(lines w/t bg/video/break/etc.)
 
         'content is fulfilled by Beatmap
