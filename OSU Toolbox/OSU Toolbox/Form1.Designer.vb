@@ -22,6 +22,7 @@ Partial Class Form1
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -55,7 +56,7 @@ Partial Class Form1
         Me.PreviousButton = New System.Windows.Forms.Button()
         Me.TrackBar1 = New System.Windows.Forms.TrackBar()
         Me.NextButton = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.LabelQQ = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TrackBar2 = New System.Windows.Forms.TrackBar()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -75,6 +76,7 @@ Partial Class Form1
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TrackBar4 = New System.Windows.Forms.TrackBar()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -323,14 +325,14 @@ Partial Class Form1
         Me.NextButton.Text = "→"
         Me.NextButton.UseVisualStyleBackColor = True
         '
-        'Label1
+        'LabelQQ
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(232, 34)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(163, 15)
-        Me.Label1.TabIndex = 8
-        Me.Label1.Text = "当前同步QQ:909643356"
+        Me.LabelQQ.AutoSize = True
+        Me.LabelQQ.Location = New System.Drawing.Point(232, 34)
+        Me.LabelQQ.Name = "LabelQQ"
+        Me.LabelQQ.Size = New System.Drawing.Size(91, 15)
+        Me.LabelQQ.TabIndex = 8
+        Me.LabelQQ.Text = "当前同步QQ:"
         '
         'Button1
         '
@@ -524,6 +526,9 @@ Partial Class Form1
         Me.Label5.TabIndex = 19
         Me.Label5.Text = "进度"
         '
+        'Timer1
+        '
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
@@ -540,7 +545,7 @@ Partial Class Form1
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.LabelQQ)
         Me.Controls.Add(Me.NextButton)
         Me.Controls.Add(Me.TrackBar1)
         Me.Controls.Add(Me.PreviousButton)
@@ -601,7 +606,7 @@ Partial Class Form1
     Friend WithEvents PreviousButton As System.Windows.Forms.Button
     Friend WithEvents TrackBar1 As System.Windows.Forms.TrackBar
     Friend WithEvents NextButton As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents LabelQQ As System.Windows.Forms.Label
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents TrackBar2 As System.Windows.Forms.TrackBar
     Friend WithEvents Label2 As System.Windows.Forms.Label
@@ -623,5 +628,6 @@ Partial Class Form1
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TrackBar4 As System.Windows.Forms.TrackBar
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Timer1 As System.Windows.Forms.Timer
 
 End Class

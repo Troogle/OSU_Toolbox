@@ -41,6 +41,7 @@ Public Class Beatmap
         Mania
     End Enum
     Private rawBeatmapData As Dictionary(Of String, String)
+    'TODO:get rid of dictionary
     'General
     Public song As New Audiofiles
     Public previewtime As Integer = 0

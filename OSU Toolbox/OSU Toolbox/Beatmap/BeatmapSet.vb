@@ -1,6 +1,6 @@
 ﻿Imports System.IO
 Imports OSU_Toolbox.Core
-Public Class BeatmapFiles
+Public Class BeatmapSet
     Public location As String
     Public Osbfilename As String
     Public Diffs As New List(Of Beatmap)

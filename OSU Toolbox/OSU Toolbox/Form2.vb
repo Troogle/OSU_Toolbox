@@ -26,4 +26,9 @@ Public Class Form2
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
     End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Form1.LabelQQ.Text = "当前同步QQ：" + ListView1.SelectedItems(0).Text
+        Me.Dispose()
+    End Sub
 End Class

@@ -89,7 +89,7 @@
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Beatmap\AVFiles.vb" />
     <Compile Include="Beatmap\Beatmap.vb" />
-    <Compile Include="Beatmap\BeatmapFiles.vb" />
+    <Compile Include="Beatmap\BeatmapSet.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
