@@ -6,7 +6,6 @@ Public Class BeatmapSet
     Public Diffs As New List(Of Beatmap)
     Public count As Integer 'number of diffs
     Public beatmapsetId As Integer
-    Public samples As Dictionary(Of String, Audiofiles)
     'no set-wide storyboard,fill it in per diffs
     Private Function check(url As String) As String
         If File.Exists(Path.Combine(location, url + ".wav")) Then Return (url + ".wav") Else Return (url + ".mp3")
@@ -57,7 +56,7 @@ Public Class BeatmapSet
         Dim file As FileInfo
         Dim osbfiles As String() = Directory.GetFiles(path, "*.osb")
         If osbfiles.Length <> 0 Then
-            Osbfilename = osbfiles(1)
+            Osbfilename = osbfiles(0)
         End If
         'osb first
         For Each file In F.GetFiles
@@ -66,17 +65,17 @@ Public Class BeatmapSet
                     count += 1
                     Dim bm As Beatmap
                     Try
-                        bm = New Beatmap(location, file.Name)
+                        bm = New Beatmap(location, file.Name, Osbfilename)
                         Diffs.Add(bm)
                     Catch generatedExceptionName As SystemException
                         Console.WriteLine("Failed to read beatmap: " & file.FullName)
                     End Try
-                Case ".mp3"
-
-                Case ".wav"
-
+                    '.mp3 .wav .png .jpg who cares?
             End Select
         Next
+        'beatmapsetId = Diffs(0).beatmapsetId
     End Sub
-
+    Public Overrides Function ToString() As String
+        Return Diffs(0).artistRomanized & " - " & Diffs(0).titleRomanized
+    End Function
 End Class

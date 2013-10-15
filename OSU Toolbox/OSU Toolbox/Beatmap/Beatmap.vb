@@ -40,7 +40,6 @@ Public Class Beatmap
         CTB
         Mania
     End Enum
-    Private rawBeatmapData As Dictionary(Of String, String)
     'TODO:get rid of dictionary
     'General
     Public song As New Audiofiles
@@ -90,12 +89,14 @@ Public Class Beatmap
         HITOBJECTS
     End Enum
     Private Function Read(osuFile As String) As Dictionary(Of String, String)
+
         Dim position As New osuFileScanStatus
         Try
             Dim b As New Dictionary(Of String, String)
             position = osuFileScanStatus.FORMAT_UNKNOWN
 
             For Each row In File.ReadAllLines(osuFile)
+                If row.Trim = "" Then Continue For
                 If row.StartsWith("//") Or row.Length = 0 Then
                     Continue For
                 End If
@@ -114,20 +115,41 @@ Public Class Beatmap
                     Case osuFileScanStatus.EVENTS
                         If row.StartsWith("0,0,") Then
                             Dim str As String = row.Substring(5, row.Length - 6)
-                            If str.EndsWith(""",0,0") Then
-                                str = str.Substring(0, str.Length - 4)
+                            If str.Contains("""") Then
+                                Dim tmp As String
+                                tmp = str.Substring(str.IndexOf("""") + 2)
+                                str = str.Substring(0, str.IndexOf(""""))
+                                If Not b.ContainsKey("BackgroundX") Then
+                                    b.Add("BackgroundX", tmp.Split(New Char() {","}, 2)(0))
+                                    b.Add("BackgoundY", tmp.Split(New Char() {","}, 2)(1))
+                                Else
+                                    b("BackgroundX") = tmp.Split(New Char() {","}, 2)(0)
+                                    b("BackgoundY") = tmp.Split(New Char() {","}, 2)(1)
+                                End If
                             End If
-                            b.Add("Background", str)
+                            If Not b.ContainsKey("Background") Then
+                                b.Add("Background", str)
+                            Else
+                                b("Background") = str
+                            End If
                         ElseIf row.StartsWith("1,") Or row.StartsWith("Video") Then
-                            haveVideo = True
-                            Dim vdata As String() = row.Split(",")
-                            b.Add("VideoOffset", vdata(1))
-                            b.Add("Video", vdata(2).Substring(1, vdata(2).Length - 2))
-                        Else
-                            Dim r As String = row.Trim()
-                            tmpSB.Add(r)
-                            haveSB = True
-                        End If
+                            If Not b.ContainsKey("Video") Then
+                                haveVideo = True
+                                Dim vdata As String() = row.Split(",")
+                                b.Add("VideoOffset", vdata(1))
+                                b.Add("Video", vdata(2).Substring(1, vdata(2).Length - 2))
+                            Else
+                                Dim vdata As String() = row.Split(",")
+                                b("VideoOffset") = vdata(1)
+                                b("Video") = vdata(2).Substring(1, vdata(2).Length - 2)
+                            End If
+                        ElseIf row.StartsWith("3,") Or row.StartsWith("2,") Then
+                            Exit Select
+                            Else
+                                Dim r As String = row.Trim()
+                                tmpSB.Add(r)
+                                haveSB = True
+                            End If
                     Case osuFileScanStatus.TIMINGPOINTS
 
                     Case osuFileScanStatus.HITOBJECTS
@@ -141,7 +163,8 @@ Public Class Beatmap
             Throw New FormatException("Failed to read .osu file", e)
         End Try
     End Function
-    Public Sub New(location_F As String, name_F As String)
+    Public Sub New(location_F As String, name_F As String, osb As String)
+        Dim rawBeatmapData As Dictionary(Of String, String)
         location = location_F
         name = name_F
         path = System.IO.Path.Combine(location, name)
@@ -185,10 +208,22 @@ Public Class Beatmap
             video.path = System.IO.Path.Combine(location, rawBeatmapData("Video"))
             video.offset = Convert.ToInt32(rawBeatmapData("VideoOffset"))
         End If
-        If rawBeatmapData.ContainsKey("SB") Then SB = New StoryBoard(tmpSB)
+        If rawBeatmapData.ContainsKey("SB") Then
+            SB = New StoryBoard(tmpSB)
+        Else
+            If osb <> "" Then
+                tmpSB.Clear()
+                Dim tmp() As String = IO.File.ReadAllLines(IO.Path.Combine(location, osb))
+                For i As Integer = 0 To tmp.Length - 1
+                    tmpSB.Add(tmp(i))
+                Next
+                SB = New StoryBoard(tmpSB)
+            End If
+        End If
+
     End Sub
     Public Overrides Function ToString() As String
-        Return artistRomanized & " - " & titleRomanized
+        Return artistRomanized & " - " & titleRomanized & " (" & creator & " ) [" & version & "]"
     End Function
     '-1 if this beatmap's artist is before the other beatmap's artist
     '0 if this beatmap's artist AND the beatmap's title is before the other beatmap's artist/title
@@ -211,5 +246,8 @@ Public Class Beatmap
         Else
             Return False
         End If
+    End Function
+    Public Function difftostring() As String
+        Return version
     End Function
 End Class

@@ -18,17 +18,9 @@ Public Class Form2
             MsgBox("获取当前在线QQ出错！")
         End Try
     End Sub
-
-    Private Sub WebBrowser1_DocumentCompleted(sender As Object, e As WebBrowserDocumentCompletedEventArgs)
-
-    End Sub
-
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Form1.LabelQQ.Text = "当前同步QQ：" + ListView1.SelectedItems(0).Text
+        Form1.uin = ListView1.SelectedItems(0).Text
         Me.Dispose()
     End Sub
 End Class

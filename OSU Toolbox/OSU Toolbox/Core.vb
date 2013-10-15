@@ -1,19 +1,33 @@
-﻿Public Class Core
-    Public Shared Function Getpath() As String
+﻿Imports System.IO
+Public Class Core
+    Public Shared osupath As String
+    Public Shared allsets As New List(Of BeatmapSet)
+    Public Shared Sub Getpath()
         Dim str As String
         Try
             Dim rk As Microsoft.Win32.RegistryKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("osu!\shell\open\command")
             str = rk.GetValue("")
             str = Strings.Mid(str, 2, InStr(2, str, """") - 10)
-            Getpath = str
+            osupath = str
         Catch ex As Exception
             MessageBox.Show("读取游戏目录出错! 请手动指定", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Getpath = ""
+            osupath = ""
         End Try
-    End Function
+    End Sub
     Public Shared Function getsong() As String
         Return ""
     End Function
+    Public Shared Sub scanforset(path As String)
+        Dim osufiles As String() = Directory.GetFiles(path, "*.osu")
+        If osufiles.Length <> 0 Then
+            allsets.Add(New BeatmapSet(path))
+        Else
+            Dim subfolder As String() = Directory.GetDirectories(path)
+            For i As Integer = 0 To subfolder.Length - 1
+                scanforset(IO.Path.Combine(path, subfolder(i)))
+            Next
+        End If
+    End Sub
     Public Enum ObjectFlag
         Normal = 1
         Slider = 2
