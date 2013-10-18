@@ -77,6 +77,7 @@ Partial Class Form1
         Me.TrackBar4 = New System.Windows.Forms.TrackBar()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -309,6 +310,7 @@ Partial Class Form1
         '
         'TrackBar1
         '
+        Me.TrackBar1.Enabled = False
         Me.TrackBar1.Location = New System.Drawing.Point(386, 433)
         Me.TrackBar1.Maximum = 100
         Me.TrackBar1.Name = "TrackBar1"
@@ -533,6 +535,9 @@ Partial Class Form1
         'Timer1
         '
         '
+        'Timer2
+        '
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
@@ -633,5 +638,6 @@ Partial Class Form1
     Friend WithEvents TrackBar4 As System.Windows.Forms.TrackBar
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents Timer2 As System.Windows.Forms.Timer
 
 End Class

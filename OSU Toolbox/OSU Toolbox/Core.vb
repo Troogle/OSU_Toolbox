@@ -18,6 +18,9 @@ Public Class Core
     Public Shared Function getsong() As String
         Return ""
     End Function
+    Public Shared Sub Superscanforset()
+        If IO.Directory.Exists(IO.Path.Combine(osupath, "Songs")) Then scanforset(IO.Path.Combine(osupath, "Songs"))
+    End Sub
     Public Shared Sub scanforset(path As String)
         Dim osufiles As String() = Directory.GetFiles(path, "*.osu")
         If osufiles.Length <> 0 Then
