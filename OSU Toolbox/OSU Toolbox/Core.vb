@@ -2,6 +2,7 @@
 Public Class Core
     Public Shared osupath As String
     Public Shared allsets As New List(Of BeatmapSet)
+    Public Shared defaultBG As String
     Public Shared Sub Getpath()
         Dim str As String
         Try
@@ -20,7 +21,9 @@ Public Class Core
     Public Shared Sub scanforset(path As String)
         Dim osufiles As String() = Directory.GetFiles(path, "*.osu")
         If osufiles.Length <> 0 Then
-            allsets.Add(New BeatmapSet(path))
+            Dim tmp As New BeatmapSet(path)
+            allsets.Add(tmp)
+            Form1.ListView1.Items.Add(tmp.name)
         Else
             Dim subfolder As String() = Directory.GetDirectories(path)
             For i As Integer = 0 To subfolder.Length - 1
@@ -55,5 +58,12 @@ Public Class Core
         Public sample As TSample
         Public sampleset As Integer
     End Structure
-End Class
 
+End Class
+Class DoubleBufferListView
+    Inherits ListView
+    Public Sub New()
+        SetStyle(ControlStyles.DoubleBuffer Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
+        UpdateStyles()
+    End Sub
+End Class

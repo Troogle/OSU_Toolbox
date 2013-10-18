@@ -19,8 +19,12 @@ Public Class Form2
         End Try
     End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Form1.LabelQQ.Text = "当前同步QQ：" + ListView1.SelectedItems(0).Text
-        Form1.uin = ListView1.SelectedItems(0).Text
-        Me.Dispose()
+        Try
+            Form1.LabelQQ.Text = "当前同步QQ：" + ListView1.SelectedItems(0).Text
+            Form1.uin = ListView1.SelectedItems(0).Text
+            Me.Dispose()
+        Catch ex As Exception
+            MsgBox("别卖萌不选啊-0-")
+        End Try
     End Sub
 End Class

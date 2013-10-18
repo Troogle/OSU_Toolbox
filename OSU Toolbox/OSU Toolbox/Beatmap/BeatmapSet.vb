@@ -3,10 +3,11 @@ Imports OSU_Toolbox.Core
 Public Class BeatmapSet
     Public location As String
     Public Osbfilename As String
-    Public Diffs As New List(Of Beatmap)
     Public count As Integer 'number of diffs
-    Public beatmapsetId As Integer
-    'no set-wide storyboard,fill it in per diffs
+    Public name As String
+    Public diffstr As New List(Of String)
+    Public detailed As Boolean = False
+    Public Diffs As New List(Of Beatmap)
     Private Function check(url As String) As String
         If File.Exists(Path.Combine(location, url + ".wav")) Then Return (url + ".wav") Else Return (url + ".mp3")
     End Function
@@ -53,29 +54,27 @@ Public Class BeatmapSet
         count = 0
         location = path
         Dim F As New DirectoryInfo(location)
-        Dim file As FileInfo
-        Dim osbfiles As String() = Directory.GetFiles(path, "*.osb")
-        If osbfiles.Length <> 0 Then
-            Osbfilename = osbfiles(0)
-        End If
+        Dim osbfiles As FileInfo() = F.GetFiles("*.osb")
+        If osbfiles.Length <> 0 Then Osbfilename = osbfiles(0).Name
         'osb first
-        For Each file In F.GetFiles
-            Select Case file.Extension
-                Case ".osu"
-                    count += 1
-                    Dim bm As Beatmap
-                    Try
-                        bm = New Beatmap(location, file.Name, Osbfilename)
-                        Diffs.Add(bm)
-                    Catch generatedExceptionName As SystemException
-                        Console.WriteLine("Failed to read beatmap: " & file.FullName)
-                    End Try
-                    '.mp3 .wav .png .jpg who cares?
-            End Select
+        Dim osufiles As FileInfo() = F.GetFiles("*.osu")
+        name = osufiles(0).Name
+        name = name.Substring(0, name.LastIndexOf("(") - 2)
+        For Each s In osufiles
+            count += 1
+            Dim filename As String = s.Name
+            Dim bm As New Beatmap(location, filename, Osbfilename)
+            Diffs.Add(bm)
         Next
-        'beatmapsetId = Diffs(0).beatmapsetId
+    End Sub
+    Public Sub GetDetail()
+        For Each bm In Diffs
+            bm.GetDetail()
+            diffstr.Add(bm.Version)
+        Next
+        detailed = True
     End Sub
     Public Overrides Function ToString() As String
-        Return Diffs(0).artistRomanized & " - " & Diffs(0).titleRomanized
+        Return name
     End Function
 End Class

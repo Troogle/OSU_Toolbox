@@ -7,6 +7,7 @@ Public Class Beatmap
     Public location As String
     Public name As String
     Public path As String
+    Private osb As String
     Public Structure Timing
         Public offset As Integer
         Public bpm As Double
@@ -35,39 +36,222 @@ Public Class Beatmap
         Public A_samples() As CSample
     End Structure
     Public Enum modes
-        All
-        Taiko
-        CTB
-        Mania
+        All = 0
+        Taiko = 1
+        CTB = 2
+        Mania = 3
     End Enum
-    'TODO:get rid of dictionary
-    'General
-    Public song As New Audiofiles
-    Public previewtime As Integer = 0
-    Public SampleSet As String = "Normal"
-    Public mode As modes = modes.All
-    'Metadata
-    Public title As String
-    Public titleRomanized As String = "<unknown title>"
-    Public artist As String
-    Public artistRomanized As String = "<unknown artist>"
-    Public creator As String
-    Public version As String
-    Public source As String = "<unknown source>"
-    Public tags As String
-    Public tagList As List(Of String)
-    Public beatmapId As Integer = 0
-    Public beatmapsetId As Integer = -1
-    'Difficulty
-    Public HPDrainRate As Integer = 5
-    Public CircleSize As Integer = 5
-    Public OverallDifficulty As Integer = 5
-    Public ApproachRate As Integer = 5
-    Public SliderMultiplier As Double = 1
-    Public SliderTickRate As Double = 1
-    'Events
+    Public Enum OSUfile
+        FileVersion
+        AudioFilename
+        AudioHash
+        AudioLeadIn
+        PreviewTime
+        Countdown
+        SampleSet
+        StackLeniency
+        Mode
+        LetterboxInBreaks
+        StoryFireInFront
+        EpilepsyWarning
+        CountdownOffset
+        WidescreenStoryboard
+        EditorBookmarks
+        EditorDistanceSpacing
+        UseSkinSprites
+        OverlayPosition
+        SkinPreference
+        SpecialStyle
+        CustomSamples
+        Bookmarks
+        DistanceSpacing
+        BeatDivisor
+        GridSize
+        CurrentTime
+        Title
+        TitleUnicode
+        Artist
+        ArtistUnicode
+        Creator
+        Version
+        Source
+        Tags
+        BeatmapID
+        BeatmapSetID
+        HPDrainRate
+        CircleSize
+        OverallDifficulty
+        ApproachRate
+        SliderMultiplier
+        SliderTickRate
+    End Enum
+    Private Rawdata(45) As String
+    Public ReadOnly Property FileVersion() As String
+        Get
+            Return Rawdata(OSUfile.FileVersion)
+        End Get
+    End Property
+    Public ReadOnly Property Audio() As String
+        Get
+            Return Rawdata(OSUfile.AudioFilename)
+        End Get
+    End Property
+    Public ReadOnly Property Previewtime() As Integer
+        Get
+            If Rawdata(OSUfile.PreviewTime) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.PreviewTime))
+            Else : Return 0
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property SampleSet() As String
+        Get
+            If Rawdata(OSUfile.SampleSet) <> "" Then
+                Return Rawdata(OSUfile.ArtistUnicode)
+            Else
+                Return "Normal"
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property Mode() As modes
+        Get
+            If Rawdata(OSUfile.Mode) <> "" Then
+                Return CType(Rawdata(OSUfile.Mode), modes)
+            Else
+                Return modes.All
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property Artist() As String
+        Get
+            If Rawdata(OSUfile.ArtistUnicode) <> "" Then
+                Return Rawdata(OSUfile.ArtistUnicode)
+            Else
+                Return (Rawdata(OSUfile.Artist))
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property ArtistRomanized() As String
+        Get
+            If Rawdata(OSUfile.Artist) <> "" Then
+                Return Rawdata(OSUfile.Artist)
+            Else
+                Return "<unknown artist>"
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property Title() As String
+        Get
+            If Rawdata(OSUfile.TitleUnicode) <> "" Then
+                Return Rawdata(OSUfile.TitleUnicode)
+            Else
+                Return (Rawdata(OSUfile.Title))
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property TitleRomanized() As String
+        Get
+            If Rawdata(OSUfile.Title) <> "" Then
+                Return Rawdata(OSUfile.Title)
+            Else
+                Return "<unknown title>"
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property Creator() As String
+        Get
+            Return Rawdata(OSUfile.Creator)
+        End Get
+    End Property
+    Public ReadOnly Property Version() As String
+        Get
+            Return Rawdata(OSUfile.Version)
+        End Get
+    End Property
+    Public ReadOnly Property Source() As String
+        Get
+            If Rawdata(OSUfile.Source) <> "" Then
+                Return Rawdata(OSUfile.Source)
+            Else
+                Return "<unknown source>"
+            End If
+        End Get
+    End Property
+    Private tags As String
+    Private I_tagList As New List(Of String)
+    Public ReadOnly Property Taglist() As List(Of String)
+        Get
+            Return I_tagList
+        End Get
+    End Property
+    Public ReadOnly Property beatmapId() As Integer
+        Get
+            If Rawdata(OSUfile.BeatmapID) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.BeatmapID))
+            Else : Return 0
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property beatmapsetId() As Integer
+        Get
+            If Rawdata(OSUfile.BeatmapSetID) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.BeatmapSetID))
+            Else : Return -1
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property HPDrainRate() As Integer
+        Get
+            If Rawdata(OSUfile.HPDrainRate) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.HPDrainRate))
+            Else : Return 5
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property CircleSize() As Integer
+        Get
+            If Rawdata(OSUfile.CircleSize) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.CircleSize))
+            Else : Return 5
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property OverallDifficulty() As Integer
+        Get
+            If Rawdata(OSUfile.OverallDifficulty) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.OverallDifficulty))
+            Else : Return 5
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property ApproachRate() As Integer
+        Get
+            If Rawdata(OSUfile.ApproachRate) <> "" Then
+                Return Convert.ToInt32(Rawdata(OSUfile.ApproachRate))
+            Else : Return Convert.ToInt32(Rawdata(OSUfile.OverallDifficulty))
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property SliderMultiplier() As Double
+        Get
+            If Rawdata(OSUfile.SliderMultiplier) <> "" Then
+                Return Convert.ToDouble(Rawdata(OSUfile.SliderMultiplier))
+            Else : Return 1
+            End If
+        End Get
+    End Property
+    Public ReadOnly Property SliderTickRate() As Double
+        Get
+            If Rawdata(OSUfile.SliderTickRate) <> "" Then
+                Return Convert.ToDouble(Rawdata(OSUfile.SliderTickRate))
+            Else : Return 1
+            End If
+        End Get
+    End Property
     Public background As String = ""
-    Public video As Videofiles
+    Public backgroundOffset As String = ""
+    Public Video As String
+    Public VideoOffset As Integer
     'diff-wide storyboard
     Public SB As StoryBoard
     'TimingPoints
@@ -88,14 +272,12 @@ Public Class Beatmap
         COLOURS
         HITOBJECTS
     End Enum
-    Private Function Read(osuFile As String) As Dictionary(Of String, String)
-
+    Public Sub GetDetail()
+        path = System.IO.Path.Combine(location, name)
         Dim position As New osuFileScanStatus
         Try
-            Dim b As New Dictionary(Of String, String)
             position = osuFileScanStatus.FORMAT_UNKNOWN
-
-            For Each row In File.ReadAllLines(osuFile)
+            For Each row In File.ReadAllLines(path)
                 If row.Trim = "" Then Continue For
                 If row.StartsWith("//") Or row.Length = 0 Then
                     Continue For
@@ -106,109 +288,49 @@ Public Class Beatmap
                 End If
                 Select Case position
                     Case osuFileScanStatus.FORMAT_UNKNOWN
-                        b.Add("FormatVersion", row.Substring(17))
+                        Rawdata(OSUfile.FileVersion) = row.Substring(17)
                         Exit Select
-                    Case osuFileScanStatus.GENERAL, osuFileScanStatus.EDITOR, osuFileScanStatus.METADATA, osuFileScanStatus.DIFFICULTY, osuFileScanStatus.COLOURS
+                    Case osuFileScanStatus.GENERAL, osuFileScanStatus.METADATA, osuFileScanStatus.EDITOR, osuFileScanStatus.DIFFICULTY
                         Dim s As String() = row.Split(New Char() {":"}, 2)
-                        b.Add(s(0).Trim(), s(1).Trim())
+                        Rawdata(System.Enum.Parse(GetType(OSUfile), s(0).Trim)) = s(1).Trim
                         Exit Select
                     Case osuFileScanStatus.EVENTS
                         If row.StartsWith("0,0,") Then
                             Dim str As String = row.Substring(5, row.Length - 6)
                             If str.Contains("""") Then
-                                Dim tmp As String
-                                tmp = str.Substring(str.IndexOf("""") + 2)
+                                backgroundOffset = str.Substring(str.IndexOf("""") + 2)
                                 str = str.Substring(0, str.IndexOf(""""))
-                                If Not b.ContainsKey("BackgroundX") Then
-                                    b.Add("BackgroundX", tmp.Split(New Char() {","}, 2)(0))
-                                    b.Add("BackgoundY", tmp.Split(New Char() {","}, 2)(1))
-                                Else
-                                    b("BackgroundX") = tmp.Split(New Char() {","}, 2)(0)
-                                    b("BackgoundY") = tmp.Split(New Char() {","}, 2)(1)
-                                End If
                             End If
-                            If Not b.ContainsKey("Background") Then
-                                b.Add("Background", str)
-                            Else
-                                b("Background") = str
-                            End If
+                            background = str
                         ElseIf row.StartsWith("1,") Or row.StartsWith("Video") Then
-                            If Not b.ContainsKey("Video") Then
-                                haveVideo = True
-                                Dim vdata As String() = row.Split(",")
-                                b.Add("VideoOffset", vdata(1))
-                                b.Add("Video", vdata(2).Substring(1, vdata(2).Length - 2))
-                            Else
-                                Dim vdata As String() = row.Split(",")
-                                b("VideoOffset") = vdata(1)
-                                b("Video") = vdata(2).Substring(1, vdata(2).Length - 2)
-                            End If
+                            haveVideo = True
+                            Dim vdata As String() = row.Split(",")
+                            VideoOffset = Convert.ToInt32(vdata(1))
+                            Video = vdata(2).Substring(1, vdata(2).Length - 2)
                         ElseIf row.StartsWith("3,") Or row.StartsWith("2,") Then
                             Exit Select
-                            Else
-                                Dim r As String = row.Trim()
-                                tmpSB.Add(r)
-                                haveSB = True
-                            End If
+                        Else
+                            Dim r As String = row.Trim()
+                            tmpSB.Add(r)
+                            haveSB = True
+                        End If
                     Case osuFileScanStatus.TIMINGPOINTS
 
                     Case osuFileScanStatus.HITOBJECTS
 
                 End Select
             Next
-            If haveSB Then b.Add("SB", "TRUE")
-            Return b
         Catch e As SystemException
             Console.WriteLine(e.StackTrace)
             Throw New FormatException("Failed to read .osu file", e)
         End Try
-    End Function
-    Public Sub New(location_F As String, name_F As String, osb As String)
-        Dim rawBeatmapData As Dictionary(Of String, String)
-        location = location_F
-        name = name_F
-        path = System.IO.Path.Combine(location, name)
-        rawBeatmapData = Read(path)
-        song.path = System.IO.Path.Combine(location, rawBeatmapData("AudioFilename"))
-        If rawBeatmapData.ContainsKey("PreviewTime") Then previewtime = Convert.ToInt32(rawBeatmapData("PreviewTime"))
-        If rawBeatmapData.ContainsKey("SampleSet") Then SampleSet = rawBeatmapData("SampleSet")
-        If rawBeatmapData.ContainsKey("Mode") Then mode = CType(rawBeatmapData("Mode"), modes)
-        If rawBeatmapData.ContainsKey("Artist") Then artistRomanized = rawBeatmapData("Artist")
-        If rawBeatmapData.ContainsKey("Title") Then titleRomanized = rawBeatmapData("Title")
-        If rawBeatmapData.ContainsKey("ArtistUnicode") And rawBeatmapData.ContainsKey("TitleUnicode") Then
-            artist = rawBeatmapData("ArtistUnicode")
-            title = rawBeatmapData("TitleUnicode")
-        Else
-            artist = artistRomanized
-            title = titleRomanized
-        End If
-        If rawBeatmapData.ContainsKey("Creator") Then creator = rawBeatmapData("Creator")
-        If rawBeatmapData.ContainsKey("Version") Then version = rawBeatmapData("Version")
-        If rawBeatmapData.ContainsKey("Source") Then source = rawBeatmapData("Source")
-        tagList = New List(Of String)()
-        If rawBeatmapData.ContainsKey("Tags") Then
-            tags = rawBeatmapData("Tags")
-            For Each s As String In rawBeatmapData("Tags").Split("=")
-                tagList.Add(s)
+        tags = Rawdata(OSUfile.Tags)
+        If tags <> "" Then
+            For Each s As String In tags.Split(" ")
+                I_tagList.Add(s)
             Next
-        Else
-            tags = ""
         End If
-        If rawBeatmapData.ContainsKey("BeatmapID") Then beatmapId = Convert.ToInt32(rawBeatmapData("BeatmapID"))
-        If rawBeatmapData.ContainsKey("BeatmapSetID") Then beatmapsetId = Convert.ToInt32(rawBeatmapData("BeatmapSetID"))
-        If rawBeatmapData.ContainsKey("HPDrainRate") Then HPDrainRate = Convert.ToInt32(rawBeatmapData("HPDrainRate"))
-        If rawBeatmapData.ContainsKey("CircleSize") Then CircleSize = Convert.ToInt32(rawBeatmapData("CircleSize"))
-        If rawBeatmapData.ContainsKey("OverallDifficulty") Then OverallDifficulty = Convert.ToInt32(rawBeatmapData("OverallDifficulty"))
-        If rawBeatmapData.ContainsKey("ApproachRate") Then ApproachRate = Convert.ToInt32(rawBeatmapData("ApproachRate")) Else ApproachRate = OverallDifficulty
-        If rawBeatmapData.ContainsKey("SliderMultiplier") Then SliderMultiplier = Convert.ToDouble(rawBeatmapData("SliderMultiplier"))
-        If rawBeatmapData.ContainsKey("SliderTickRate") Then SliderTickRate = Convert.ToDouble(rawBeatmapData("SliderTickRate"))
-        If rawBeatmapData.ContainsKey("Background") Then background = System.IO.Path.Combine(location, rawBeatmapData("Background"))
-        If rawBeatmapData.ContainsKey("Video") Then
-            video = New Videofiles
-            video.path = System.IO.Path.Combine(location, rawBeatmapData("Video"))
-            video.offset = Convert.ToInt32(rawBeatmapData("VideoOffset"))
-        End If
-        If rawBeatmapData.ContainsKey("SB") Then
+        If haveSB Then
             SB = New StoryBoard(tmpSB)
         Else
             If osb <> "" Then
@@ -218,9 +340,14 @@ Public Class Beatmap
                     tmpSB.Add(tmp(i))
                 Next
                 SB = New StoryBoard(tmpSB)
+                haveSB = True
             End If
         End If
-
+    End Sub
+    Public Sub New(location_F As String, name_F As String, osb_F As String)
+        location = location_F
+        name = name_F
+        osb = osb_F
     End Sub
     Public Overrides Function ToString() As String
         Return artistRomanized & " - " & titleRomanized & " (" & creator & " ) [" & version & "]"
