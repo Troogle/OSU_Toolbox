@@ -43,6 +43,6 @@ Public Class Videofiles
         If videofile.Paused Then videofile.Play() Else videofile.Pause()
     End Sub
     Public Sub seek(time As Double)
-        videofile.SeekCurrentPosition(time, SeekPositionFlags.AbsolutePositioning)
+        videofile.SeekCurrentPosition(time, SeekPositionFlags.IncrementalPositioning)
     End Sub
 End Class

@@ -315,7 +315,23 @@ Public Class Beatmap
                             haveSB = True
                         End If
                     Case osuFileScanStatus.TIMINGPOINTS
-
+                        Dim s As String() = row.Split(New Char() {","}, 8)
+                        Dim tmp As New Timing
+                        tmp.kiai = Convert.ToInt32(s(7))
+                        tmp.type = Convert.ToInt32(s(6))
+                        tmp.volume = Convert.ToInt32(s(5))
+                        Dim tmpsample As CSample
+                        tmpsample.sampleset = Convert.ToInt32(s(4))
+                        tmpsample.sample = System.Enum.Parse(GetType(TSample), s(3))
+                        tmp.sample = tmpsample
+                        tmp.meter = Convert.ToInt32(s(2))
+                        If tmp.type = 1 Then
+                            tmp.bpm = 60000 / Convert.ToDouble(s(1))
+                        Else
+                            tmp.bpm = -100 / Convert.ToDouble(s(1))
+                        End If
+                        tmp.offset = Int(Convert.ToDouble(s(0)))
+                        timingpoints.Add(tmp)
                     Case osuFileScanStatus.HITOBJECTS
 
                 End Select

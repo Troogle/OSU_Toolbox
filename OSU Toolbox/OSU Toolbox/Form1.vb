@@ -28,6 +28,8 @@ Public Class Form1
     Private Sub Play()
         Timer2.Enabled = True
         stopWatch.Start()
+        uni_Video.Pause()
+        TrackBar1.Enabled = True
         first_P = False
     End Sub
     Private Sub PlayButton_Click(sender As Object, e As EventArgs) Handles PlayButton.Click
@@ -68,14 +70,16 @@ Public Class Form1
         Return False
     End Function
     Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
-        If (ListBox1.SelectedIndices.Count = 0) Or (ListView1.SelectedIndices.Count = 0) Then Exit Sub
-        tmp = allsets.Item(ListView1.SelectedIndices(0))
-        tmpbm = tmp.Diffs(ListBox1.SelectedIndex)
         Try
+            Timer2.Enabled = False
             uni_Video.dispose()
+            TrackBar1.Enabled = False
         Catch ex As Exception
 
         End Try
+        If (ListBox1.SelectedIndices.Count = 0) Or (ListView1.SelectedIndices.Count = 0) Then Exit Sub
+        tmp = allsets.Item(ListView1.SelectedIndices(0))
+        tmpbm = tmp.Diffs(ListBox1.SelectedIndex)
         If tmpbm.haveVideo Then
             uni_Video.init(IO.Path.Combine(tmpbm.location, tmpbm.Video))
             uni_Video.Play(Me.Panel1)
@@ -90,12 +94,22 @@ Public Class Form1
         first_P = True
     End Sub
 
-    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+    Private Sub TrackBar1_MouseDown(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseDown
+        Timer2.Enabled = False
+
+    End Sub
+
+    Private Sub TrackBar1_MouseUp(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseUp
         uni_Video.seek(TrackBar1.Value / 100 * uni_Video.durnation)
+        Timer2.Enabled = True
+    End Sub
+
+    Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
+
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
         Dim ts As TimeSpan = stopWatch.Elapsed
-        TrackBar1.Value = Int(uni_Video.current / uni_Video.durnation)
+        TrackBar1.Value = Int(uni_Video.current / uni_Video.durnation * 100)
     End Sub
 End Class
