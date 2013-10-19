@@ -19,7 +19,7 @@ Public Class Core
         Return ""
     End Function
     Public Shared Sub Superscanforset()
-        If IO.Directory.Exists(IO.Path.Combine(osupath, "Songs")) Then scanforset(IO.Path.Combine(osupath, "Songs"))
+        If IO.Directory.Exists(IO.Path.Combine(osupath, "Songs")) Then scanforset(IO.Path.Combine(osupath, "Songs\1108"))
     End Sub
     Public Shared Sub scanforset(path As String)
         Dim osufiles As String() = Directory.GetFiles(path, "*.osu")
@@ -62,11 +62,4 @@ Public Class Core
         Public sampleset As Integer
     End Structure
 
-End Class
-Class DoubleBufferListView
-    Inherits ListView
-    Public Sub New()
-        SetStyle(ControlStyles.DoubleBuffer Or ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
-        UpdateStyles()
-    End Sub
 End Class

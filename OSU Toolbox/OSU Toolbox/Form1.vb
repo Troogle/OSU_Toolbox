@@ -6,9 +6,9 @@ Imports System.Threading
 Public Class Form1
     Public uin As String
     Public uni_Video As New Videofiles
-    Public uni_Audio As New Audiofiles
+    'Public uni_Audio As New Audiofiles
+    Public uni_timer As New Stopwatch
     Public first_P As Boolean = True
-    Public stopWatch As New Stopwatch()
     Dim tmp As BeatmapSet
     Dim tmpbm As Beatmap
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -25,10 +25,22 @@ Public Class Form1
             e.Cancel = True
         End If
     End Sub
+    Private Sub setbg()
+        Dim tmpimg As System.Drawing.Image
+        tmpimg = Image.FromFile(IO.Path.Combine(tmpbm.location, tmpbm.background))
+        Dim myCallback As New Image.GetThumbnailImageAbort(AddressOf ThumbnailCallback)
+        Panel1.BackgroundImage = tmpimg.GetThumbnailImage(Panel1.Width, Panel1.Height, myCallback, IntPtr.Zero)
+        tmpimg.Dispose()
+    End Sub
     Private Sub Play()
-        Timer2.Enabled = True
-        stopWatch.Start()
-        uni_Video.Pause()
+        uni_timer.Start()
+        If tmpbm.haveVideo Then
+            Timer2.Enabled = True
+            uni_Video.init(IO.Path.Combine(tmpbm.location, tmpbm.Video))
+            uni_Video.Play(Me.Panel1)
+            uni_Video.Pause()
+            uni_Video.Pause()
+        End If
         TrackBar1.Enabled = True
         first_P = False
     End Sub
@@ -38,11 +50,11 @@ Public Class Form1
             PlayButton.Text = "暂停"
         Else
             uni_Video.Pause()
-            stopWatch.Stop()
+            uni_timer.Stop()
             PlayButton.Text = "播放"
         End If
     End Sub
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click
         Form2.Show()
     End Sub
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -56,20 +68,18 @@ Public Class Form1
             Throw New FormatException("Failed to read song path", ex)
         End Try
     End Sub
+    Private Sub ListView1_DoubleClick(sender As Object, e As EventArgs) Handles ListView1.DoubleClick
+        Play()
+        PlayButton.Text = "暂停"
+    End Sub
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
         If ListView1.SelectedIndices.Count = 0 Then Exit Sub
-        Dim tmp As BeatmapSet
         ListBox1.Items.Clear()
         tmp = allsets.Item(ListView1.SelectedIndices(0))
         If Not tmp.detailed Then tmp.GetDetail()
         For Each s In tmp.diffstr
             ListBox1.Items.Add(s)
         Next
-    End Sub
-    Public Function ThumbnailCallback() As Boolean
-        Return False
-    End Function
-    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
         Try
             Timer2.Enabled = False
             uni_Video.dispose()
@@ -77,21 +87,18 @@ Public Class Form1
         Catch ex As Exception
 
         End Try
+        tmpbm = tmp.Diffs(0)
+        setbg()
+    End Sub
+    Public Function ThumbnailCallback() As Boolean
+        Return False
+    End Function
+    Private Sub ListBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListBox1.SelectedIndexChanged
         If (ListBox1.SelectedIndices.Count = 0) Or (ListView1.SelectedIndices.Count = 0) Then Exit Sub
-        tmp = allsets.Item(ListView1.SelectedIndices(0))
         tmpbm = tmp.Diffs(ListBox1.SelectedIndex)
-        If tmpbm.haveVideo Then
-            uni_Video.init(IO.Path.Combine(tmpbm.location, tmpbm.Video))
-            uni_Video.Play(Me.Panel1)
-            uni_Video.Pause()
-        Else
-            Dim tmpimg As System.Drawing.Image
-            tmpimg = Image.FromFile(IO.Path.Combine(tmpbm.location, tmpbm.background))
-            Dim myCallback As New Image.GetThumbnailImageAbort(AddressOf ThumbnailCallback)
-            Panel1.BackgroundImage = tmpimg.GetThumbnailImage(Panel1.Width, Panel1.Height, myCallback, IntPtr.Zero)
-            tmpimg.Dispose()
-        End If
+        setbg()
         first_P = True
+        PlayButton.Text = "播放"
     End Sub
 
     Private Sub TrackBar1_MouseDown(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseDown
@@ -109,7 +116,7 @@ Public Class Form1
     End Sub
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        Dim ts As TimeSpan = stopWatch.Elapsed
+        Dim ts As TimeSpan = uni_timer.Elapsed
         TrackBar1.Value = Int(uni_Video.current / uni_Video.durnation * 100)
     End Sub
 End Class

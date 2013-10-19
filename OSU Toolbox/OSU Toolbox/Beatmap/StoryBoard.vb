@@ -20,7 +20,7 @@
     End Enum
     Public Enum ElementOrigin
         TopLeft
-        TopCenter
+        TopCentre
         TopRight
         CentreLeft
         Centre
@@ -100,7 +100,40 @@
     End Class
     Public Sub New(content As List(Of String))
         'initlazation from pieces of files(lines w/t bg/video/break/etc.)
+        Dim Position As String
+        Dim tmp() As String
+        Try
+            Position = "Unknown"
+            For Each row In content
+                If row.Trim = "" Then Continue For
+                If row.StartsWith("//") Or row.Length = 0 Then Continue For
+                If row.StartsWith("[") Then
+                    Position = row.Substring(1, row.Length - 2)
+                    Continue For
+                End If
+                Select Case Position
+                    Case "Variables"
+                        Dim tmpvar As SBvar
+                        tmpvar.name = row.Split(New Char() {"="}, 2)(0)
+                        tmpvar.replace = row.Split(New Char() {"="}, 2)(1)
+                        tmpvar.name.Substring(1, tmpvar.name.Length - 1)
+                        Variables.Add(tmpvar)
+                    Case "Events"
+                        For Each tmpvar In Variables
+                            If row.Contains(tmpvar.name) Then row.Replace(tmpvar.name, tmpvar.replace)
+                        Next
+                        tmp = row.Split(New Char() {","}, 2)
+                        Select Case tmp(0)
+                            Case "Sprite"
 
+                            Case "Animation"
+
+                        End Select
+                End Select
+            Next
+        Catch ex As Exception
+
+        End Try
         'content is fulfilled by Beatmap
         'do variables change first
         '注意点：

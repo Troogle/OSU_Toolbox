@@ -284,6 +284,7 @@ Public Class Beatmap
                 End If
                 If row.StartsWith("[") Then
                     position = CType(System.Enum.Parse(GetType(osuFileScanStatus), row.Substring(1, row.Length - 2).ToUpper()), osuFileScanStatus)
+                    If position = osuFileScanStatus.EVENTS Then tmpSB.Add("[Events]")
                     Continue For
                 End If
                 Select Case position
@@ -346,19 +347,14 @@ Public Class Beatmap
                 I_tagList.Add(s)
             Next
         End If
-        If haveSB Then
-            SB = New StoryBoard(tmpSB)
-        Else
-            If osb <> "" Then
-                tmpSB.Clear()
-                Dim tmp() As String = IO.File.ReadAllLines(IO.Path.Combine(location, osb))
-                For i As Integer = 0 To tmp.Length - 1
-                    tmpSB.Add(tmp(i))
-                Next
-                SB = New StoryBoard(tmpSB)
-                haveSB = True
-            End If
+        If osb <> "" Then
+            Dim tmp() As String = IO.File.ReadAllLines(IO.Path.Combine(location, osb))
+            For i As Integer = 0 To tmp.Length - 1
+                tmpSB.Add(tmp(i))
+            Next
+            haveSB = True
         End If
+        If haveSB Then SB = New StoryBoard(tmpSB)
     End Sub
     Public Sub New(location_F As String, name_F As String, osb_F As String)
         location = location_F
