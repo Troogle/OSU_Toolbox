@@ -2,7 +2,7 @@
 Public Class Core
     Public Shared osupath As String
     Public Shared allsets As New List(Of BeatmapSet)
-    Public Shared defaultBG As String
+    Public Shared defaultBG As String = Path.Combine(Application.StartupPath, "default\") & "defaultBG.png"
     Public Shared Sub Getpath()
         Dim str As String
         Try
@@ -15,7 +15,24 @@ Public Class Core
             osupath = ""
         End Try
     End Sub
+    Private Declare Function GetDesktopWindow Lib "user32" () As Integer
+    Private Declare Function GetForegroundWindow Lib "user32" () As Integer
+    Private Declare Function GetWindow Lib "user32" (ByVal hwnd As Integer, ByVal wCmd As Integer) As Integer
+    Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Integer, ByVal lpString As String, ByVal cch As Integer) As Integer
+    Private Const GW_CHILD = 5
+    Private Const GW_HWNDNEXT = 2
     Public Shared Function getsong() As String
+        Dim hwnd As Long
+        Dim strTitle As String = ""
+        hwnd = GetDesktopWindow()
+        hwnd = GetWindow(hwnd, GW_CHILD)
+        Do While hwnd <> 0
+            GetWindowText(hwnd, strTitle, 255)
+            If strTitle.Contains("osu!") Then
+                Return strTitle
+            End If
+            hwnd = GetWindow(hwnd, GW_HWNDNEXT)
+        Loop
         Return ""
     End Function
     Public Shared Sub Superscanforset()
@@ -25,8 +42,10 @@ Public Class Core
         Dim osufiles As String() = Directory.GetFiles(path, "*.osu")
         If osufiles.Length <> 0 Then
             Dim tmp As New BeatmapSet(path)
+            'tmp.GetDetail()
             allsets.Add(tmp)
-            Form1.ListView1.Items.Add(tmp.name)
+            Dim tmpl As New ListViewItem(tmp.name)
+            Form1.ListView1.Items.Add(tmpl)
         Else
             Dim subfolder As String() = Directory.GetDirectories(path)
             For i As Integer = 0 To subfolder.Length - 1
@@ -60,6 +79,10 @@ Public Class Core
     Public Structure CSample
         Public sample As TSample
         Public sampleset As Integer
+        Public Sub New(sample, sampleset)
+            Me.sampleset = sampleset
+            Me.sample = sample
+        End Sub
     End Structure
 
 End Class

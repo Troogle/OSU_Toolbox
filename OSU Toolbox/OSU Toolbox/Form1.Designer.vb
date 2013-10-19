@@ -22,7 +22,6 @@ Partial Class Form1
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
@@ -67,9 +66,8 @@ Partial Class Form1
         Me.TrackBar3 = New System.Windows.Forms.TrackBar()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TrackBar4 = New System.Windows.Forms.TrackBar()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.Button2 = New System.Windows.Forms.Button()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.MenuStrip1.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -343,6 +341,7 @@ Partial Class Form1
         '
         'ListView1
         '
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1})
         Me.ListView1.FullRowSelect = True
         Me.ListView1.GridLines = True
         Me.ListView1.Location = New System.Drawing.Point(16, 67)
@@ -351,7 +350,7 @@ Partial Class Form1
         Me.ListView1.Size = New System.Drawing.Size(316, 360)
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
-        Me.ListView1.View = System.Windows.Forms.View.List
+        Me.ListView1.View = System.Windows.Forms.View.Details
         '
         'ListBox1
         '
@@ -418,12 +417,6 @@ Partial Class Form1
         Me.TrackBar4.TickStyle = System.Windows.Forms.TickStyle.None
         Me.TrackBar4.Value = 80
         '
-        'Timer1
-        '
-        '
-        'Timer2
-        '
-        '
         'Button2
         '
         Me.Button2.Location = New System.Drawing.Point(16, 34)
@@ -432,6 +425,11 @@ Partial Class Form1
         Me.Button2.TabIndex = 9
         Me.Button2.Text = "选择Collection"
         Me.Button2.UseVisualStyleBackColor = True
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = ""
+        Me.ColumnHeader1.Width = 1024
         '
         'Form1
         '
@@ -513,9 +511,8 @@ Partial Class Form1
     Friend WithEvents TrackBar3 As System.Windows.Forms.TrackBar
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents TrackBar4 As System.Windows.Forms.TrackBar
-    Friend WithEvents Timer1 As System.Windows.Forms.Timer
-    Friend WithEvents Timer2 As System.Windows.Forms.Timer
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
 
 End Class

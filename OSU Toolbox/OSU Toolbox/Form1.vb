@@ -27,7 +27,9 @@ Public Class Form1
     End Sub
     Private Sub setbg()
         Dim tmpimg As System.Drawing.Image
-        tmpimg = Image.FromFile(IO.Path.Combine(tmpbm.location, tmpbm.background))
+        Dim bgpath As String
+        If tmpbm.background = "" Then bgpath = defaultBG Else bgpath = IO.Path.Combine(tmpbm.location, tmpbm.background)
+        tmpimg = Image.FromFile(bgpath)
         Dim myCallback As New Image.GetThumbnailImageAbort(AddressOf ThumbnailCallback)
         Panel1.BackgroundImage = tmpimg.GetThumbnailImage(Panel1.Width, Panel1.Height, myCallback, IntPtr.Zero)
         tmpimg.Dispose()
@@ -35,7 +37,6 @@ Public Class Form1
     Private Sub Play()
         uni_timer.Start()
         If tmpbm.haveVideo Then
-            Timer2.Enabled = True
             uni_Video.init(IO.Path.Combine(tmpbm.location, tmpbm.Video))
             uni_Video.Play(Me.Panel1)
             uni_Video.Pause()
@@ -49,16 +50,13 @@ Public Class Form1
             If first_P Then Play() Else uni_Video.Pause()
             PlayButton.Text = "暂停"
         Else
-            uni_Video.Pause()
-            uni_timer.Stop()
+            'uni_Video.Pause()
+            'uni_timer.Stop()
             PlayButton.Text = "播放"
         End If
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click, Button2.Click
         Form2.Show()
-    End Sub
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        getsong()
     End Sub
     Private Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
         Try
@@ -81,7 +79,6 @@ Public Class Form1
             ListBox1.Items.Add(s)
         Next
         Try
-            Timer2.Enabled = False
             uni_Video.dispose()
             TrackBar1.Enabled = False
         Catch ex As Exception
@@ -102,20 +99,18 @@ Public Class Form1
     End Sub
 
     Private Sub TrackBar1_MouseDown(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseDown
-        Timer2.Enabled = False
 
     End Sub
 
     Private Sub TrackBar1_MouseUp(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseUp
         uni_Video.seek(TrackBar1.Value / 100 * uni_Video.durnation)
-        Timer2.Enabled = True
     End Sub
 
     Private Sub TrackBar1_Scroll(sender As Object, e As EventArgs) Handles TrackBar1.Scroll
 
     End Sub
 
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs)
         Dim ts As TimeSpan = uni_timer.Elapsed
         TrackBar1.Value = Int(uni_Video.current / uni_Video.durnation * 100)
     End Sub

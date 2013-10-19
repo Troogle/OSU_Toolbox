@@ -2,6 +2,7 @@
     Public elements As New List(Of SBelement)
     'TODO:单独抽取trigger并作索引
     Public Variables As New List(Of SBvar)
+    Public trigger As New Dictionary(Of Triggertype, TriggerEvent)
     '目录由beatmapfiles.location-->beatmap.location
     Public Enum ElementType
         Background
@@ -77,6 +78,7 @@
         Public r1, g1, b1, r2, g2, b2 As Integer 'C
     End Structure
     Public Structure TriggerEvent
+
         Public triggerstart, triggerend As Integer
         Public events() As SBEvent
         Public count As Integer
@@ -93,7 +95,6 @@
         'Sample only
         Public time, volume As Integer
         Public SBevents As New List(Of SBEvent)
-        Public trigger As New Dictionary(Of Triggertype, TriggerEvent)
         '事件触发循环可以被游戏时间事件触发. 虽然叫做循环, 事件触发循环循环时只执行一次
         '触发器循环和普通循环一样是从零计数. 如果两个重叠, 第一个将会被停止且被一个从头开始的循环替代.
         '如果他们和任何存在的故事版事件重叠,他们将不会循环直到那些故事版事件不在生效
