@@ -241,6 +241,7 @@ Public Class Beatmap
         EDITOR
         METADATA
         DIFFICULTY
+        VARIABLES
         EVENTS
         TIMINGPOINTS
         COLOURS
@@ -248,10 +249,15 @@ Public Class Beatmap
     End Enum
     Public Sub GetDetail()
         path = System.IO.Path.Combine(location, name)
+        Dim content As New List(Of String)
+        content.AddRange(File.ReadAllLines(path))
+        If osb <> "" Then
+            content.AddRange(File.ReadAllLines(IO.Path.Combine(location, osb)))
+        End If
         Dim position As New osuFileScanStatus
         Try
             position = osuFileScanStatus.FORMAT_UNKNOWN
-            For Each row In File.ReadAllLines(path)
+            For Each row In content
                 If row.Trim = "" Then Continue For
                 If row.StartsWith("//") Or row.Length = 0 Then
                     Continue For
@@ -259,6 +265,7 @@ Public Class Beatmap
                 If row.StartsWith("[") Then
                     position = CType(System.Enum.Parse(GetType(osuFileScanStatus), row.Substring(1, row.Length - 2).ToUpper()), osuFileScanStatus)
                     If position = osuFileScanStatus.EVENTS Then tmpSB.Add("[Events]")
+                    If position = osuFileScanStatus.VARIABLES Then tmpSB.Add("[Variables]")
                     Continue For
                 End If
                 Select Case position
@@ -285,10 +292,11 @@ Public Class Beatmap
                         ElseIf row.StartsWith("3,") Or row.StartsWith("2,") Then
                             Exit Select
                         Else
-                            Dim r As String = row.Trim()
-                            tmpSB.Add(r)
+                            tmpSB.Add(row)
                             haveSB = True
                         End If
+                    Case osuFileScanStatus.VARIABLES
+                        tmpSB.Add(row)
                     Case osuFileScanStatus.TIMINGPOINTS
                         Dim tmp As New Timing
                         Dim tmpop As String
@@ -358,31 +366,31 @@ Public Class Beatmap
                                 End If
                                 Exit Select
                             Case ObjectFlag.Slider
-                                    tmp.allhitsound = Convert.ToInt32(picknext(row))
-                                    tmpop = picknext(row)
-                                    'ignore all anthor
-                                    tmpop = picknext(row)
-                                    If tmpop <> "" Then tmp.repeatcount = Convert.ToInt32(tmpop) Else tmp.repeatcount = 0
-                                    tmpop = picknext(row)
-                                    If tmpop <> "" Then tmp.length = Convert.ToDouble(tmpop) Else tmp.length = 0
-                                    tmpop = picknext(row)
-                                    tmp.Hitsounds = New List(Of Integer)
-                                    tmp.samples = New List(Of CSample)
-                                    tmp.A_samples = New List(Of CSample)
-                                    If tmpop <> "" Then
-                                        tmpspilt = tmpop.Split(New Char() {"|"})
-                                        For Each s In tmpspilt
-                                            tmp.Hitsounds.Add(Convert.ToInt32(s))
-                                        Next
-                                    End If
-                                    tmpop = picknext(row)
-                                    If tmpop <> "" Then
-                                        tmpspilt = tmpop.Split(New Char() {"|"})
-                                        For Each s In tmpspilt
-                                            tmp.samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(0)), 0))
-                                            tmp.A_samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(2)), 0))
-                                        Next
-                                    End If
+                                tmp.allhitsound = Convert.ToInt32(picknext(row))
+                                tmpop = picknext(row)
+                                'ignore all anthor
+                                tmpop = picknext(row)
+                                If tmpop <> "" Then tmp.repeatcount = Convert.ToInt32(tmpop) Else tmp.repeatcount = 0
+                                tmpop = picknext(row)
+                                If tmpop <> "" Then tmp.length = Convert.ToDouble(tmpop) Else tmp.length = 0
+                                tmpop = picknext(row)
+                                tmp.Hitsounds = New List(Of Integer)
+                                tmp.samples = New List(Of CSample)
+                                tmp.A_samples = New List(Of CSample)
+                                If tmpop <> "" Then
+                                    tmpspilt = tmpop.Split(New Char() {"|"})
+                                    For Each s In tmpspilt
+                                        tmp.Hitsounds.Add(Convert.ToInt32(s))
+                                    Next
+                                End If
+                                tmpop = picknext(row)
+                                If tmpop <> "" Then
+                                    tmpspilt = tmpop.Split(New Char() {"|"})
+                                    For Each s In tmpspilt
+                                        tmp.samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(0)), 0))
+                                        tmp.A_samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(2)), 0))
+                                    Next
+                                End If
                                 tmpop = picknext(row)
                                 If tmpop <> "" Then
                                     If tmpop.Length > 3 Then
@@ -406,6 +414,7 @@ Public Class Beatmap
                                 'HitSound S1|S2|S3|S4......Sn 计算公式n=RepeatCount+1
                             Case Else
                                 'Throw New FormatException("Failed to read .osu file")
+                                'this is for mania
                         End Select
 
                 End Select
@@ -419,13 +428,6 @@ Public Class Beatmap
             For Each s As String In tags.Split(" ")
                 I_tagList.Add(s)
             Next
-        End If
-        If osb <> "" Then
-            Dim tmp() As String = IO.File.ReadAllLines(IO.Path.Combine(location, osb))
-            For i As Integer = 0 To tmp.Length - 1
-                tmpSB.Add(tmp(i))
-            Next
-            haveSB = True
         End If
         If haveSB Then SB = New StoryBoard(tmpSB)
     End Sub

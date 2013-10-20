@@ -73,6 +73,7 @@ Public Class Form1
     Private Sub ListView1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ListView1.SelectedIndexChanged
         If ListView1.SelectedIndices.Count = 0 Then Exit Sub
         ListBox1.Items.Clear()
+        ListDetail.Items.Clear()
         tmp = allsets.Item(ListView1.SelectedIndices(0))
         If Not tmp.detailed Then tmp.GetDetail()
         For Each s In tmp.diffstr
