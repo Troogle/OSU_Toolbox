@@ -7,7 +7,7 @@ Public Class Core
         Dim str As String
         Try
             Dim rk As Microsoft.Win32.RegistryKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey("osu!\shell\open\command")
-            str = rk.GetValue("")
+            str = rk.GetValue("").ToString
             str = Strings.Mid(str, 2, InStr(2, str, """") - 10)
             osupath = str
         Catch ex As Exception
@@ -22,7 +22,7 @@ Public Class Core
     Private Const GW_CHILD = 5
     Private Const GW_HWNDNEXT = 2
     Public Shared Function getsong() As String
-        Dim hwnd As Long
+        Dim hwnd As Integer
         Dim strTitle As String = ""
         hwnd = GetDesktopWindow()
         hwnd = GetWindow(hwnd, GW_CHILD)
@@ -123,9 +123,9 @@ Public Class Core
     Public Structure CSample
         Public sample As TSample
         Public sampleset As Integer
-        Public Sub New(sample, sampleset)
+        Public Sub New(sample As Integer, sampleset As Integer)
             Me.sampleset = sampleset
-            Me.sample = sample
+            Me.sample = CType(sample, TSample)
         End Sub
     End Structure
 

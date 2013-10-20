@@ -1,8 +1,6 @@
 ﻿Imports OSU_Toolbox.Selfupdate
 Imports OSU_Toolbox.Core
 Imports OSU_Toolbox.OsuDB
-Imports System.Diagnostics
-Imports System.Threading
 Public Class Form1
     Public uin As String
     Public uni_Video As New Videofiles
@@ -119,6 +117,6 @@ Public Class Form1
 
     Private Sub Timer2_Tick(sender As Object, e As EventArgs)
         Dim ts As TimeSpan = uni_timer.Elapsed
-        TrackBar1.Value = Int(uni_Video.current / uni_Video.durnation * 100)
+        TrackBar1.Value = CInt(uni_Video.current / uni_Video.durnation * 100)
     End Sub
 End Class

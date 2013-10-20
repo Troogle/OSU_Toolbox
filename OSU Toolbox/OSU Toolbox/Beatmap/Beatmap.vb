@@ -230,9 +230,9 @@ Public Class Beatmap
     End Function
     Private Function check(op As String) As ObjectFlag
         Dim tmp As Integer = Convert.ToInt32(op)
-        If ((tmp >> 0) And 1) Then Return ObjectFlag.Normal
-        If ((tmp >> 1) And 1) Then Return ObjectFlag.Slider
-        If ((tmp >> 3) And 1) Then Return ObjectFlag.Spinner
+        If ((tmp >> 0) And 1) = 1 Then Return ObjectFlag.Normal
+        If ((tmp >> 1) And 1) = 1 Then Return ObjectFlag.Slider
+        If ((tmp >> 3) And 1) = 1 Then Return ObjectFlag.Spinner
         Return ObjectFlag.ColourHax
     End Function
     Enum osuFileScanStatus
@@ -273,8 +273,8 @@ Public Class Beatmap
                         Rawdata(OSUfile.FileVersion) = row.Substring(17)
                         Exit Select
                     Case osuFileScanStatus.GENERAL, osuFileScanStatus.METADATA, osuFileScanStatus.EDITOR, osuFileScanStatus.DIFFICULTY
-                        Dim s As String() = row.Split(New Char() {":"}, 2)
-                        Rawdata(System.Enum.Parse(GetType(OSUfile), s(0).Trim)) = s(1).Trim
+                        Dim s As String() = row.Split(New Char() {":"c}, 2)
+                        Rawdata(CInt(System.Enum.Parse(GetType(OSUfile), s(0).Trim))) = s(1).Trim
                         Exit Select
                     Case osuFileScanStatus.EVENTS
                         If row.StartsWith("0,0,") Then
@@ -286,7 +286,7 @@ Public Class Beatmap
                             background = str
                         ElseIf row.StartsWith("1,") Or row.StartsWith("Video") Then
                             haveVideo = True
-                            Dim vdata As String() = row.Split(",")
+                            Dim vdata As String() = row.Split(New Char() {","c})
                             VideoOffset = Convert.ToInt32(vdata(1))
                             Video = vdata(2).Substring(1, vdata(2).Length - 2)
                         ElseIf row.StartsWith("3,") Or row.StartsWith("2,") Then
@@ -300,7 +300,7 @@ Public Class Beatmap
                     Case osuFileScanStatus.TIMINGPOINTS
                         Dim tmp As New Timing
                         Dim tmpop As String
-                        tmp.offset = Int(Convert.ToDouble(picknext(row)))
+                        tmp.offset = CInt(Convert.ToDouble(picknext(row)))
                         tmp.bpm = Convert.ToDouble(picknext(row))
                         tmpop = picknext(row)
                         If tmpop = "" Then tmp.meter = 4 Else tmp.meter = Convert.ToInt32(tmpop)
@@ -308,7 +308,7 @@ Public Class Beatmap
                         If tmpop = "" Then
                             tmp.sample = New CSample(TSample.Normal, 0)
                         Else
-                            tmp.sample = New CSample(System.Enum.Parse(GetType(TSample), tmpop), Convert.ToInt32(picknext(row)))
+                            tmp.sample = New CSample(CInt(System.Enum.Parse(GetType(TSample), tmpop)), Convert.ToInt32(picknext(row)))
                         End If
                         tmpop = picknext(row)
                         If tmpop = "" Then tmp.volume = 100 Else tmp.volume = Convert.ToInt32(tmpop)
@@ -378,17 +378,17 @@ Public Class Beatmap
                                 tmp.samples = New List(Of CSample)
                                 tmp.A_samples = New List(Of CSample)
                                 If tmpop <> "" Then
-                                    tmpspilt = tmpop.Split(New Char() {"|"})
+                                    tmpspilt = tmpop.Split(New Char() {"|"c})
                                     For Each s In tmpspilt
                                         tmp.Hitsounds.Add(Convert.ToInt32(s))
                                     Next
                                 End If
                                 tmpop = picknext(row)
                                 If tmpop <> "" Then
-                                    tmpspilt = tmpop.Split(New Char() {"|"})
+                                    tmpspilt = tmpop.Split(New Char() {"|"c})
                                     For Each s In tmpspilt
-                                        tmp.samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(0)), 0))
-                                        tmp.A_samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(2)), 0))
+                                        tmp.samples.Add(New CSample(CInt(System.Enum.Parse(GetType(TSample), s(0))), 0))
+                                        tmp.A_samples.Add(New CSample(CInt(System.Enum.Parse(GetType(TSample), s(2))), 0))
                                     Next
                                 End If
                                 tmpop = picknext(row)
@@ -425,7 +425,7 @@ Public Class Beatmap
         End Try
         tags = Rawdata(OSUfile.Tags)
         If tags <> "" Then
-            For Each s As String In tags.Split(" ")
+            For Each s As String In tags.Split(New Char() {" "c})
                 I_tagList.Add(s)
             Next
         End If

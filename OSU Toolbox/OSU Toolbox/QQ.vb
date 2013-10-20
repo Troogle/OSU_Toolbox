@@ -1,6 +1,6 @@
 ﻿Public Class QQ
     Public Class QQInfo
-        Public uin As UInteger
+        Public uin As Integer
         Public nick As String
     End Class
     Public web As WebBrowser = New WebBrowser()
@@ -20,13 +20,13 @@
                 If uinList <> Nothing Then
                     For i = 0 To uinList.Children.Count - 1
                         Dim str As String = uinList.Children(i).InnerText.Trim()
-                        Dim temp() As String = str.Split(" ")
+                        Dim temp() As String = str.Split(New Char() {" "c})
                         Dim nick As String = temp(0)
                         Dim uin As String = temp(1)
                         uin = uin.Replace("(", "").Replace(")", "")
                         Dim NInfo As New QQInfo()
                         NInfo.nick = nick
-                        NInfo.uin = uin
+                        NInfo.uin = Convert.ToInt32(uin)
                         ref.Add(NInfo)
                     Next
                 End If

@@ -18,16 +18,16 @@ Public Class BeatmapSet
         If sample.sampleset = 0 Then
             Dim all As String = Path.Combine(Application.StartupPath, "\defalut\") & [Enum].GetName(GetType(TSample), sample.sample)
             If soundtype Mod 2 = 0 Then tmp.Add(all + "-hitnormal.wav")
-            soundtype = Int(soundtype / 2)
+            soundtype = CInt(soundtype / 2)
             If soundtype = 0 Then Return tmp
             If soundtype Mod 2 = 1 Then tmp.Add(all + "-hitwhistle.wav")
-            soundtype = Int(soundtype / 2)
+            soundtype = CInt(soundtype / 2)
             If soundtype = 0 Then Return tmp
             If soundtype Mod 2 = 1 Then tmp.Add(all + "-finish.wav")
-            soundtype = Int(soundtype / 2)
+            soundtype = CInt(soundtype / 2)
             If soundtype = 0 Then Return tmp
             If soundtype Mod 2 = 1 Then tmp.Add(all + "-hitclap.wav")
-            soundtype = Int(soundtype / 2)
+            soundtype = CInt(soundtype / 2)
             Return tmp
         End If
         If sample.sampleset = 1 Then last = "" Else last = sample.sampleset.ToString
@@ -38,16 +38,16 @@ Public Class BeatmapSet
         Dim first As String
         first = [Enum].GetName(GetType(TSample), sample.sample)
         If soundtype Mod 2 = 0 Then tmp.Add(check(first + "-hitnormal" + last))
-        soundtype = Int(soundtype / 2)
+        soundtype = CInt(soundtype / 2)
         If soundtype = 0 Then Return tmp
         If soundtype Mod 2 = 1 Then tmp.Add(check(first + "-hitwhistle" + last))
-        soundtype = Int(soundtype / 2)
+        soundtype = CInt(soundtype / 2)
         If soundtype = 0 Then Return tmp
         If soundtype Mod 2 = 1 Then tmp.Add(check(first + "-finish" + last))
-        soundtype = Int(soundtype / 2)
+        soundtype = CInt(soundtype / 2)
         If soundtype = 0 Then Return tmp
         If soundtype Mod 2 = 1 Then tmp.Add(check(first + "-hitclap" + last))
-        soundtype = Int(soundtype / 2)
+        soundtype = CInt(soundtype / 2)
         Return tmp
     End Function
     Public Sub New(path As String)

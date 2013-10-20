@@ -246,8 +246,8 @@
                 Select Case Position
                     Case "Variables"
                         Dim tmpvar As SBvar
-                        tmpvar.name = row.Split(New Char() {"="}, 2)(0)
-                        tmpvar.replace = row.Split(New Char() {"="}, 2)(1)
+                        tmpvar.name = row.Split(New Char() {"="c}, 2)(0)
+                        tmpvar.replace = row.Split(New Char() {"="c}, 2)(1)
                         tmpvar.name.Substring(1, tmpvar.name.Length - 1)
                         Variables.Add(tmpvar)
                     Case "Events"
@@ -257,10 +257,10 @@
                         Next
                         If row.StartsWith("Sample") Or row.StartsWith("5,") Then
                             'Sample,time,layer,"filepath",volume
-                            tmp = row.Split(New Char() {","})
+                            tmp = row.Split(New Char() {","c})
                             tmpe = New SBelement
                             tmpe.Type = ElementType.Sample
-                            tmpe.Layers = System.Enum.Parse(GetType(ElementLayer), tmp(2))
+                            tmpe.Layers = CType(System.Enum.Parse(GetType(ElementLayer), tmp(2)), ElementLayer)
                             tmpe.path = tmp(3)
                             elements.Add(tmpe)
                             currentelement += 1
@@ -273,27 +273,27 @@
                             i += 1
                         ElseIf row.StartsWith("Animation") Or row.StartsWith("6,") Then
                             'Animation,"layer","origin","filepath",x,y,frameCount,frameDelay,looptype
-                            tmp = row.Split(New Char() {","})
+                            tmp = row.Split(New Char() {","c})
                             tmpe = New SBelement
                             tmpe.Type = ElementType.Animation
-                            tmpe.Layers = System.Enum.Parse(GetType(ElementLayer), tmp(1))
-                            tmpe.Origin = System.Enum.Parse(GetType(ElementOrigin), tmp(2))
+                            tmpe.Layers = CType(System.Enum.Parse(GetType(ElementLayer), tmp(1)), ElementLayer)
+                            tmpe.Origin = CType(System.Enum.Parse(GetType(ElementOrigin), tmp(2)), ElementOrigin)
                             tmpe.path = tmp(3)
                             tmpe.x = Convert.ToInt32(tmp(4))
                             tmpe.y = Convert.ToInt32(tmp(5))
                             tmpe.frameCount = Convert.ToInt32(tmp(6))
-                            tmpe.framedelay = Int(Convert.ToDouble(tmp(7)))
-                            tmpe.Looptype = System.Enum.Parse(GetType(ElementLoopType), tmp(8))
+                            tmpe.framedelay = CInt(Convert.ToDouble(tmp(7)))
+                            tmpe.Looptype = CType(System.Enum.Parse(GetType(ElementLoopType), tmp(8)), ElementLoopType)
                             elements.Add(tmpe)
                             currentelement += 1
                             i += 1
                         ElseIf row.StartsWith("Sprite") Or row.StartsWith("4,") Then
                             'Sprite,"layer","origin","filepath",x,y
-                            tmp = row.Split(New Char() {","})
+                            tmp = row.Split(New Char() {","c})
                             tmpe = New SBelement
                             tmpe.Type = ElementType.Sprite
-                            tmpe.Layers = System.Enum.Parse(GetType(ElementLayer), tmp(1))
-                            tmpe.Origin = System.Enum.Parse(GetType(ElementOrigin), tmp(2))
+                            tmpe.Layers = CType(System.Enum.Parse(GetType(ElementLayer), tmp(1)), ElementLayer)
+                            tmpe.Origin = CType(System.Enum.Parse(GetType(ElementOrigin), tmp(2)), ElementOrigin)
                             tmpe.path = tmp(3)
                             tmpe.x = Convert.ToInt32(tmp(4))
                             tmpe.y = Convert.ToInt32(tmp(5))
@@ -301,7 +301,7 @@
                             currentelement += 1
                             i += 1
                         ElseIf row.StartsWith("0,") Then
-                            tmp = row.Split(New Char() {","})
+                            tmp = row.Split(New Char() {","c})
                             tmpe = New SBelement
                             tmpe.Type = ElementType.Sprite
                             tmpe.Layers = ElementLayer.Background
