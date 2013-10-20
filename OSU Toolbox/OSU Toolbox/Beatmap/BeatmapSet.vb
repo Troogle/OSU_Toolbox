@@ -59,7 +59,7 @@ Public Class BeatmapSet
         'osb first
         Dim osufiles As FileInfo() = F.GetFiles("*.osu")
         name = osufiles(0).Name
-        name = name.Substring(0, name.LastIndexOf("(") - 2)
+        name = name.Substring(0, name.LastIndexOf("("))
         For Each s In osufiles
             count += 1
             Dim filename As String = s.Name

@@ -53,6 +53,50 @@ Public Class Core
             Next
         End If
     End Sub
+    Public Enum OSUfile
+        FileVersion
+        AudioFilename
+        AudioHash
+        AudioLeadIn
+        PreviewTime
+        Countdown
+        SampleSet
+        StackLeniency
+        Mode
+        LetterboxInBreaks
+        StoryFireInFront
+        EpilepsyWarning
+        CountdownOffset
+        WidescreenStoryboard
+        EditorBookmarks
+        EditorDistanceSpacing
+        UseSkinSprites
+        OverlayPosition
+        SkinPreference
+        SpecialStyle
+        CustomSamples
+        Bookmarks
+        DistanceSpacing
+        BeatDivisor
+        GridSize
+        CurrentTime
+        Title
+        TitleUnicode
+        Artist
+        ArtistUnicode
+        Creator
+        Version
+        Source
+        Tags
+        BeatmapID
+        BeatmapSetID
+        HPDrainRate
+        CircleSize
+        OverallDifficulty
+        ApproachRate
+        SliderMultiplier
+        SliderTickRate
+    End Enum
     Public Enum ObjectFlag
         Normal = 1
         Slider = 2

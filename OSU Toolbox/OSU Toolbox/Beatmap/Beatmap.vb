@@ -41,51 +41,7 @@ Public Class Beatmap
         CTB = 2
         Mania = 3
     End Enum
-    Public Enum OSUfile
-        FileVersion
-        AudioFilename
-        AudioHash
-        AudioLeadIn
-        PreviewTime
-        Countdown
-        SampleSet
-        StackLeniency
-        Mode
-        LetterboxInBreaks
-        StoryFireInFront
-        EpilepsyWarning
-        CountdownOffset
-        WidescreenStoryboard
-        EditorBookmarks
-        EditorDistanceSpacing
-        UseSkinSprites
-        OverlayPosition
-        SkinPreference
-        SpecialStyle
-        CustomSamples
-        Bookmarks
-        DistanceSpacing
-        BeatDivisor
-        GridSize
-        CurrentTime
-        Title
-        TitleUnicode
-        Artist
-        ArtistUnicode
-        Creator
-        Version
-        Source
-        Tags
-        BeatmapID
-        BeatmapSetID
-        HPDrainRate
-        CircleSize
-        OverallDifficulty
-        ApproachRate
-        SliderMultiplier
-        SliderTickRate
-    End Enum
-    Private Rawdata(45) As String
+    Public Rawdata(45) As String
     Public ReadOnly Property FileVersion() As String
         Get
             Return Rawdata(OSUfile.FileVersion)

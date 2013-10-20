@@ -59,6 +59,7 @@ Partial Class Form1
         Me.TrackBar2 = New System.Windows.Forms.TrackBar()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ListBox1 = New System.Windows.Forms.ListBox()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.SearchButton = New System.Windows.Forms.Button()
@@ -67,7 +68,9 @@ Partial Class Form1
         Me.Label4 = New System.Windows.Forms.Label()
         Me.TrackBar4 = New System.Windows.Forms.TrackBar()
         Me.Button2 = New System.Windows.Forms.Button()
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ListDetail = New System.Windows.Forms.ListView()
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.MenuStrip1.SuspendLayout()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -87,7 +90,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ToolStripMenuItem3, Me.关于ToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(886, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(882, 28)
         Me.MenuStrip1.TabIndex = 2
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -352,13 +355,18 @@ Partial Class Form1
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
         '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = ""
+        Me.ColumnHeader1.Width = 1024
+        '
         'ListBox1
         '
         Me.ListBox1.FormattingEnabled = True
         Me.ListBox1.ItemHeight = 15
         Me.ListBox1.Location = New System.Drawing.Point(12, 472)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(320, 94)
+        Me.ListBox1.Size = New System.Drawing.Size(320, 199)
         Me.ListBox1.TabIndex = 0
         '
         'TextBox1
@@ -426,16 +434,35 @@ Partial Class Form1
         Me.Button2.Text = "选择Collection"
         Me.Button2.UseVisualStyleBackColor = True
         '
-        'ColumnHeader1
+        'ListDetail
         '
-        Me.ColumnHeader1.Text = ""
-        Me.ColumnHeader1.Width = 1024
+        Me.ListDetail.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader2, Me.ColumnHeader3})
+        Me.ListDetail.FullRowSelect = True
+        Me.ListDetail.GridLines = True
+        Me.ListDetail.Location = New System.Drawing.Point(342, 472)
+        Me.ListDetail.MultiSelect = False
+        Me.ListDetail.Name = "ListDetail"
+        Me.ListDetail.Size = New System.Drawing.Size(524, 199)
+        Me.ListDetail.TabIndex = 19
+        Me.ListDetail.UseCompatibleStateImageBehavior = False
+        Me.ListDetail.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Key"
+        Me.ColumnHeader2.Width = 256
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Value"
+        Me.ColumnHeader3.Width = 256
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(886, 593)
+        Me.ClientSize = New System.Drawing.Size(882, 681)
+        Me.Controls.Add(Me.ListDetail)
         Me.Controls.Add(Me.TrackBar3)
         Me.Controls.Add(Me.ListView1)
         Me.Controls.Add(Me.Label3)
@@ -514,5 +541,8 @@ Partial Class Form1
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ListDetail As System.Windows.Forms.ListView
+    Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
 
 End Class

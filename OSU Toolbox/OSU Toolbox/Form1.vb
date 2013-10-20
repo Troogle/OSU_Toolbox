@@ -78,13 +78,19 @@ Public Class Form1
         For Each s In tmp.diffstr
             ListBox1.Items.Add(s)
         Next
+        tmpbm = tmp.Diffs(0)
+        For i As OSUfile = OSUfile.FileVersion To OSUfile.SliderTickRate
+            Dim tmpl As New ListViewItem(i.ToString)
+            tmpl.SubItems.Add(tmpbm.Rawdata(i))
+            ListDetail.Items.Add(tmpl)
+        Next
         Try
             uni_Video.dispose()
             TrackBar1.Enabled = False
         Catch ex As Exception
 
         End Try
-        tmpbm = tmp.Diffs(0)
+
         setbg()
     End Sub
     Public Function ThumbnailCallback() As Boolean
