@@ -31,9 +31,9 @@ Public Class Beatmap
         Public slidernodes() As note
         Public repeatcount As Integer
         Public length As Double
-        Public Hitsounds() As Integer
-        Public samples() As CSample
-        Public A_samples() As CSample
+        Public Hitsounds As List(Of Integer)
+        Public samples As List(Of CSample)
+        Public A_samples As List(Of CSample)
     End Structure
     Public Enum modes
         All = 0
@@ -217,7 +217,7 @@ Public Class Beatmap
     Public haveSB As Boolean = False
     Public haveVideo As Boolean = False
     Private tmpSB As New List(Of String)
-    Public Function picknext(ByRef str As String) As String
+    Private Function picknext(ByRef str As String) As String
         Dim ref As String
         If Not str.Contains(",") Then
             ref = str
@@ -227,6 +227,13 @@ Public Class Beatmap
             str = str.Substring(str.IndexOf(",") + 1)
         End If
         Return ref
+    End Function
+    Private Function check(op As String) As ObjectFlag
+        Dim tmp As Integer = Convert.ToInt32(op)
+        If ((tmp >> 0) And 1) Then Return ObjectFlag.Normal
+        If ((tmp >> 1) And 1) Then Return ObjectFlag.Slider
+        If ((tmp >> 3) And 1) Then Return ObjectFlag.Spinner
+        Return ObjectFlag.ColourHax
     End Function
     Enum osuFileScanStatus
         FORMAT_UNKNOWN
@@ -284,7 +291,6 @@ Public Class Beatmap
                         End If
                     Case osuFileScanStatus.TIMINGPOINTS
                         Dim tmp As New Timing
-                        Dim tmpsample As CSample
                         Dim tmpop As String
                         tmp.offset = Int(Convert.ToDouble(picknext(row)))
                         tmp.bpm = Convert.ToDouble(picknext(row))
@@ -292,11 +298,10 @@ Public Class Beatmap
                         If tmpop = "" Then tmp.meter = 4 Else tmp.meter = Convert.ToInt32(tmpop)
                         tmpop = picknext(row)
                         If tmpop = "" Then
-                            tmpsample = New CSample(TSample.Normal, 0)
+                            tmp.sample = New CSample(TSample.Normal, 0)
                         Else
-                            tmpsample = New CSample(System.Enum.Parse(GetType(TSample), tmpop), Convert.ToInt32(picknext(row)))
+                            tmp.sample = New CSample(System.Enum.Parse(GetType(TSample), tmpop), Convert.ToInt32(picknext(row)))
                         End If
-                        tmp.sample = tmpsample
                         tmpop = picknext(row)
                         If tmpop = "" Then tmp.volume = 100 Else tmp.volume = Convert.ToInt32(tmpop)
                         tmpop = picknext(row)
@@ -312,50 +317,95 @@ Public Class Beatmap
                     Case osuFileScanStatus.HITOBJECTS
                         Dim tmp As New HitObject
                         Dim tmpop As String
-                        Dim tmpsample As CSample
+                        Dim tmpspilt() As String
                         tmp.x = Convert.ToInt32(picknext(row))
                         tmp.y = Convert.ToInt32(picknext(row))
                         tmp.starttime = Convert.ToInt32(picknext(row))
-                        Select Case picknext(row)
-                            Case ObjectFlag.Normal, ObjectFlag.NormalNewCombo
+                        Select Case check(picknext(row))
+                            Case ObjectFlag.Normal
                                 tmp.allhitsound = Convert.ToInt32(picknext(row))
                                 tmpop = picknext(row)
                                 If tmpop <> "" Then
-                                    tmp.sample = New CSample(Convert.ToInt32(tmpop(1)), Convert.ToInt32(tmpop(5)))
-                                    tmp.A_sample = New CSample(Convert.ToInt32(tmpop(3)), Convert.ToInt32(tmpop(7)))
+                                    If tmpop.Length > 3 Then
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(4)))
+                                        If tmpop.Length < 7 Then tmpop = tmpop & ":0:"
+                                        tmp.A_sample = New CSample(Convert.ToInt32(tmpop(2)), Convert.ToInt32(tmpop(6)))
+                                    Else
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(2)))
+                                        tmp.A_sample = New CSample(TSample.Normal, 0)
+                                    End If
                                 Else
                                     tmp.sample = New CSample(TSample.Normal, 0)
                                     tmp.A_sample = New CSample(TSample.Normal, 0)
                                 End If
-                            Case ObjectFlag.Slider, ObjectFlag.SliderNewCombo
+                                Exit Select
+                            Case ObjectFlag.Spinner
                                 tmp.allhitsound = Convert.ToInt32(picknext(row))
+                                tmp.EndTime = Convert.ToInt32(picknext(row))
                                 tmpop = picknext(row)
-                                'ignore all anthor
+                                If tmpop <> "" Then
+                                    If tmpop.Length > 3 Then
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(4)))
+                                        If tmpop.Length < 7 Then tmpop = tmpop & ":0:"
+                                        tmp.A_sample = New CSample(Convert.ToInt32(tmpop(2)), Convert.ToInt32(tmpop(6)))
+                                    Else
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(2)))
+                                        tmp.A_sample = New CSample(TSample.Normal, 0)
+                                    End If
+                                Else
+                                    tmp.sample = New CSample(TSample.Normal, 0)
+                                    tmp.A_sample = New CSample(TSample.Normal, 0)
+                                End If
+                                Exit Select
+                            Case ObjectFlag.Slider
+                                    tmp.allhitsound = Convert.ToInt32(picknext(row))
+                                    tmpop = picknext(row)
+                                    'ignore all anthor
+                                    tmpop = picknext(row)
+                                    If tmpop <> "" Then tmp.repeatcount = Convert.ToInt32(tmpop) Else tmp.repeatcount = 0
+                                    tmpop = picknext(row)
+                                    If tmpop <> "" Then tmp.length = Convert.ToDouble(tmpop) Else tmp.length = 0
+                                    tmpop = picknext(row)
+                                    tmp.Hitsounds = New List(Of Integer)
+                                    tmp.samples = New List(Of CSample)
+                                    tmp.A_samples = New List(Of CSample)
+                                    If tmpop <> "" Then
+                                        tmpspilt = tmpop.Split(New Char() {"|"})
+                                        For Each s In tmpspilt
+                                            tmp.Hitsounds.Add(Convert.ToInt32(s))
+                                        Next
+                                    End If
+                                    tmpop = picknext(row)
+                                    If tmpop <> "" Then
+                                        tmpspilt = tmpop.Split(New Char() {"|"})
+                                        For Each s In tmpspilt
+                                            tmp.samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(0)), 0))
+                                            tmp.A_samples.Add(New CSample(System.Enum.Parse(GetType(TSample), s(2)), 0))
+                                        Next
+                                    End If
                                 tmpop = picknext(row)
-                                If tmpop <> "" Then tmp.repeatcount = Convert.ToInt32(tmpop) Else tmp.repeatcount = 0
-                                tmpop = picknext(row)
-                                If tmpop <> "" Then tmp.length = Convert.ToInt32(tmpop) Else tmp.length = 0
-
-
-                                'HitSound (SampleSet&Addition|SampleSet&Addition),(All SampleSet&Addition)
+                                If tmpop <> "" Then
+                                    If tmpop.Length > 3 Then
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(4)))
+                                        If tmpop.Length < 7 Then tmpop = tmpop & ":0:"
+                                        tmp.A_sample = New CSample(Convert.ToInt32(tmpop(2)), Convert.ToInt32(tmpop(6)))
+                                    Else
+                                        tmp.sample = New CSample(Convert.ToInt32(tmpop(0)), Convert.ToInt32(tmpop(2)))
+                                        tmp.A_sample = New CSample(TSample.Normal, 0)
+                                    End If
+                                Else
+                                    tmp.sample = New CSample(TSample.Normal, 0)
+                                    tmp.A_sample = New CSample(TSample.Normal, 0)
+                                End If
+                                Exit Select
+                                'HitSound,(SampleSet&Addition|SampleSet&Addition),(All SampleSet&Addition)
                                 'SampleSet&Addition 只有sample没有setcount
                                 'All SampleSet&Addition 啥都有
                                 '数值1为不反复
                                 'Length=长度（乘以每小节时间60000/BPM再乘以滑条速度SliderMultiplier为滑条时间长度）
                                 'HitSound S1|S2|S3|S4......Sn 计算公式n=RepeatCount+1
-                            Case ObjectFlag.Spinner, ObjectFlag.SpinnerNewCombo
-                                tmp.allhitsound = Convert.ToInt32(picknext(row))
-                                tmp.EndTime = Convert.ToInt32(picknext(row))
-                                tmpop = picknext(row)
-                                If tmpop <> "" Then
-                                    tmp.sample = New CSample(Convert.ToInt32(tmpop(1)), Convert.ToInt32(tmpop(5)))
-                                    tmp.A_sample = New CSample(Convert.ToInt32(tmpop(3)), Convert.ToInt32(tmpop(7)))
-                                Else
-                                    tmp.sample = New CSample(TSample.Normal, 0)
-                                    tmp.A_sample = New CSample(TSample.Normal, 0)
-                                End If
                             Case Else
-                                Throw New FormatException("Failed to read .osu file")
+                                'Throw New FormatException("Failed to read .osu file")
                         End Select
 
                 End Select
